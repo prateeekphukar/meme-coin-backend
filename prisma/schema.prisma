@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Chain {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  symbol    String   @unique
+  tokens    Token[]
+  createdAt DateTime @default(now())
+}
+
+model Token {
+  id              String          @id @default(uuid())
+  symbol          String
+  name            String
+  address         String          @unique
+  chainId         String
+  chain           Chain           @relation(fields: [chainId], references: [id])
+  priceUsd        Float?
+  marketCap       Float?
+  memeScore       Float?          @default(0)
+  snapshots       TokenSnapshot[]
+  watchlists      WatchlistToken[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@index([memeScore(sort: Desc)])
+  @@index([address])
+}
+
+model TokenSnapshot {
+  id        String   @id @default(uuid())
+  tokenId   String
+  token     Token    @relation(fields: [tokenId], references: [id])
+  priceUsd  Float
+  volume24h Float?
+  memeScore Float
+  timestamp DateTime @default(now())
+
+  @@index([tokenId, timestamp])
+}
+
+model User {
+  id         String      @id @default(uuid())
+  email      String      @unique
+  password   String
+  watchlists Watchlist[]
+  createdAt  DateTime    @default(now())
+}
+
+model Watchlist {
+  id        String           @id @default(uuid())
+  name      String
+  userId    String
+  user      User             @relation(fields: [userId], references: [id])
+  tokens    WatchlistToken[]
+  createdAt DateTime         @default(now())
+}
+
+model WatchlistToken {
+  id          String    @id @default(uuid())
+  watchlistId String
+  watchlist   Watchlist @relation(fields: [watchlistId], references: [id])
+  tokenId     String
+  token       Token     @relation(fields: [tokenId], references: [id])
+  createdAt   DateTime  @default(now())
+
+  @@unique([watchlistId, tokenId])
+}
