@@ -10,7 +10,7 @@ export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all tokens with Coinbase links' })
+  @ApiOperation({ summary: 'Get all tokens with CoinMarketCap links' })
   @ApiResponse({ status: 200, description: 'Returns list of tokens', type: TokenListResponseDto })
   @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Number of tokens to return (default: 100)' })
   @ApiQuery({ name: 'offset', required: false, type: Number, description: 'Offset for pagination (default: 0)' })
@@ -25,7 +25,7 @@ export class TokenController {
   }
 
   @Get('top')
-  @ApiOperation({ summary: 'Get top tokens by meme score with Coinbase links' })
+  @ApiOperation({ summary: 'Get top tokens by meme score with CoinMarketCap links' })
   @ApiResponse({ status: 200, description: 'Returns top tokens', type: [TokenResponseDto] })
   @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Number of top tokens to return (default: 20)' })
   async getTopTokens(@Query('limit') limit?: string): Promise<TokenResponseDto[]> {
@@ -82,7 +82,7 @@ export class TokenController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a single token by ID with Coinbase link' })
+  @ApiOperation({ summary: 'Get a single token by ID with CoinMarketCap link' })
   @ApiResponse({ status: 200, description: 'Returns the token', type: TokenResponseDto })
   @ApiResponse({ status: 404, description: 'Token not found' })
   async findOne(@Param('id') id: string): Promise<TokenResponseDto> {
@@ -96,7 +96,7 @@ export class TokenController {
   }
 
   @Post('sync-coinbase-urls')
-  @ApiOperation({ summary: 'Sync Coinbase URLs for all tokens' })
+  @ApiOperation({ summary: 'Sync CoinMarketCap URLs for all tokens' })
   @ApiResponse({ status: 200, description: 'Returns number of tokens synced' })
   async syncCoinbaseUrls() {
     return this.tokenService.syncCoinbaseUrls();

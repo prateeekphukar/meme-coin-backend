@@ -42,7 +42,7 @@ export class NewLaunchTokenDto {
   @ApiProperty({ required: false })
   memeScore?: number;
 
-  @ApiProperty({ required: false, description: 'URL to Coinbase page for this token' })
+  @ApiProperty({ required: false, description: 'URL to CoinMarketCap page for this token' })
   coinbaseUrl?: string;
 
   @ApiProperty({ description: 'Token launch date' })

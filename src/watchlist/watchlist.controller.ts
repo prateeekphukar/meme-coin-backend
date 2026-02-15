@@ -8,8 +8,8 @@ export class WatchlistController {
   constructor(private readonly watchlistService: WatchlistService) {}
 
   @Get('user/:userId')
-  @ApiOperation({ summary: 'Get user watchlists with Coinbase links for tokens' })
-  @ApiResponse({ status: 200, description: 'Returns user watchlists with token Coinbase URLs' })
+  @ApiOperation({ summary: 'Get user watchlists with CoinMarketCap links for tokens' })
+  @ApiResponse({ status: 200, description: 'Returns user watchlists with token CoinMarketCap URLs' })
   async findUserWatchlists(@Param('userId') userId: string) {
     return this.watchlistService.findUserWatchlists(userId);
   }

@@ -7,18 +7,18 @@ export class TokenService {
   constructor(private prisma: PrismaService) {}
 
   /**
-   * Generate Coinbase URL for a token based on its symbol
+   * Generate CoinMarketCap URL for a token based on its symbol
    * @param symbol Token symbol (e.g., 'BTC', 'ETH', 'DOGE')
-   * @returns Coinbase URL
+   * @returns CoinMarketCap URL
    */
   generateCoinbaseUrl(symbol: string): string {
-    // Coinbase uses lowercase symbols in URLs
+    // CoinMarketCap search URL - works for any symbol
     const normalizedSymbol = symbol.toUpperCase();
-    return `https://www.coinbase.com/price/${normalizedSymbol}`;
+    return `https://coinmarketcap.com/currencies/${normalizedSymbol.toLowerCase()}/`;
   }
 
   /**
-   * Get all tokens with Coinbase URLs
+   * Get all tokens with CoinMarketCap URLs
    */
   async findAll(limit: number = 100, offset: number = 0) {
     const tokens = await this.prisma.token.findMany({
@@ -34,7 +34,7 @@ export class TokenService {
 
     const total = await this.prisma.token.count();
 
-    // Add Coinbase URLs if not already set
+    // Add CoinMarketCap URLs if not already set
     const tokensWithUrls = tokens.map(token => ({
       ...token,
       coinbaseUrl: token.coinbaseUrl || this.generateCoinbaseUrl(token.symbol),
@@ -44,7 +44,7 @@ export class TokenService {
   }
 
   /**
-   * Get a single token by ID with Coinbase URL
+   * Get a single token by ID with CoinMarketCap URL
    */
   async findOne(id: string) {
     const token = await this.prisma.token.findUnique({
@@ -58,7 +58,7 @@ export class TokenService {
       return null;
     }
 
-    // Add Coinbase URL if not already set
+    // Add CoinMarketCap URL if not already set
     return {
       ...token,
       coinbaseUrl: token.coinbaseUrl || this.generateCoinbaseUrl(token.symbol),
@@ -66,7 +66,7 @@ export class TokenService {
   }
 
   /**
-   * Get top tokens by meme score with Coinbase URLs
+   * Get top tokens by meme score with CoinMarketCap URLs
    */
   async getTopTokens(limit: number = 20) {
     const tokens = await this.prisma.token.findMany({
@@ -79,7 +79,7 @@ export class TokenService {
       },
     });
 
-    // Add Coinbase URLs
+    // Add CoinMarketCap URLs
     return tokens.map(token => ({
       ...token,
       coinbaseUrl: token.coinbaseUrl || this.generateCoinbaseUrl(token.symbol),
@@ -87,7 +87,7 @@ export class TokenService {
   }
 
   /**
-   * Update a token's Coinbase URL
+   * Update a token's CoinMarketCap URL
    */
   async updateCoinbaseUrl(id: string, url: string) {
     return this.prisma.token.update({
@@ -97,7 +97,7 @@ export class TokenService {
   }
 
   /**
-   * Bulk update Coinbase URLs for all tokens
+   * Bulk update CoinMarketCap URLs for all tokens
    */
   async syncCoinbaseUrls() {
     const tokens = await this.prisma.token.findMany();
