@@ -28,7 +28,12 @@ const sampleTokens = [
         marketCap: 2500000,
         memeScore: 87.5,
         launchDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        daysSinceLaunch: 5
+        daysSinceLaunch: 5,
+        tags: ['rocket'],
+        riskLevel: 'MEDIUM',
+        holders: 2500,
+        twitterFollowers: 15000,
+        liquidityLocked: true
     },
     {
         id: '2',
@@ -42,7 +47,12 @@ const sampleTokens = [
         marketCap: 15000000,
         memeScore: 92.0,
         launchDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-        daysSinceLaunch: 3
+        daysSinceLaunch: 3,
+        tags: ['rocket'],
+        riskLevel: 'LOW',
+        holders: 8500,
+        twitterFollowers: 45000,
+        liquidityLocked: true
     },
     {
         id: '3',
@@ -56,7 +66,12 @@ const sampleTokens = [
         marketCap: 8500000,
         memeScore: 78.3,
         launchDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-        daysSinceLaunch: 7
+        daysSinceLaunch: 7,
+        tags: ['dog'],
+        riskLevel: 'MEDIUM',
+        holders: 3200,
+        twitterFollowers: 22000,
+        liquidityLocked: false
     },
     {
         id: '4',
@@ -70,7 +85,12 @@ const sampleTokens = [
         marketCap: 1200000,
         memeScore: 65.8,
         launchDate: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString(),
-        daysSinceLaunch: 6
+        daysSinceLaunch: 6,
+        tags: ['pepe'],
+        riskLevel: 'HIGH',
+        holders: 1500,
+        twitterFollowers: 8000,
+        liquidityLocked: false
     },
     {
         id: '5',
@@ -84,7 +104,12 @@ const sampleTokens = [
         marketCap: 3500000,
         memeScore: 82.1,
         launchDate: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
-        daysSinceLaunch: 4
+        daysSinceLaunch: 4,
+        tags: ['dog', 'shib'],
+        riskLevel: 'LOW',
+        holders: 5400,
+        twitterFollowers: 35000,
+        liquidityLocked: true
     },
     {
         id: '6',
@@ -98,7 +123,12 @@ const sampleTokens = [
         marketCap: 6800000,
         memeScore: 88.9,
         launchDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        daysSinceLaunch: 2
+        daysSinceLaunch: 2,
+        tags: ['dog'],
+        riskLevel: 'MEDIUM',
+        holders: 4200,
+        twitterFollowers: 28000,
+        liquidityLocked: true
     }
 ];
 
@@ -146,6 +176,31 @@ function loadDemoData() {
     }, 800);
 }
 
+// Filter tokens by tag
+function filterByTag(tag, element) {
+    const buttons = document.querySelectorAll('.tag-btn');
+    buttons.forEach(btn => btn.classList.remove('active'));
+    
+    // Use the element parameter or fallback to event.target
+    const activeBtn = element || event?.target;
+    if (activeBtn) {
+        activeBtn.classList.add('active');
+    }
+    
+    let filtered = tag === 'all' ? sampleTokens : sampleTokens.filter(t => t.tags?.includes(tag));
+    displayDemoResults(filtered);
+}
+
+// Search tokens
+function filterTokens() {
+    const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+    const filtered = sampleTokens.filter(token => 
+        token.symbol.toLowerCase().includes(searchTerm) ||
+        token.name.toLowerCase().includes(searchTerm)
+    );
+    displayDemoResults(filtered);
+}
+
 // Display demo results
 function displayDemoResults(tokens) {
     const container = document.getElementById('demo-results');
@@ -157,6 +212,20 @@ function displayDemoResults(tokens) {
         
         const priceChangeClass = coin.priceChangePercent >= 0 ? 'price-change-positive' : 'price-change-negative';
         const priceChangeIcon = coin.priceChangePercent >= 0 ? 'bi-arrow-up' : 'bi-arrow-down';
+        
+        // Get risk badge color
+        const riskColors = {
+            'LOW': 'success',
+            'MEDIUM': 'warning',
+            'HIGH': 'danger',
+            'CRITICAL': 'dark'
+        };
+        const riskColor = riskColors[coin.riskLevel] || 'warning';
+        
+        // Create tags HTML
+        const tagsHtml = coin.tags ? coin.tags.map(tag => 
+            `<span class="badge bg-secondary me-1">${tag}</span>`
+        ).join('') : '';
         
         col.innerHTML = `
             <div class="card h-100 border-primary">
@@ -172,10 +241,17 @@ function displayDemoResults(tokens) {
                                     <i class="bi bi-box-arrow-up-right" style="font-size: 0.8rem; opacity: 0.6;"></i>
                                 </h4>
                                 <small class="text-muted">${coin.name}</small>
-                                <div class="mt-1">
+                                <div class="mt-2">
+                                    ${tagsHtml}
+                                </div>
+                                <div class="mt-2">
                                     <span class="badge bg-info text-dark">
                                         <i class="bi bi-clock me-1"></i>
                                         ${coin.daysSinceLaunch} days ago
+                                    </span>
+                                    <span class="badge bg-${riskColor}">
+                                        <i class="bi bi-exclamation-triangle me-1"></i>
+                                        Risk: ${coin.riskLevel}
                                     </span>
                                 </div>
                             </div>
@@ -220,6 +296,26 @@ function displayDemoResults(tokens) {
                             </div>
                         ` : ''}
                         
+                        ${coin.holders ? `
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Holders:</span>
+                                <span class="fw-bold">${formatNumber(coin.holders)}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${coin.twitterFollowers ? `
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Twitter:</span>
+                                <span class="fw-bold">${formatNumber(coin.twitterFollowers)}</span>
+                            </div>
+                        ` : ''}
+                        
+                        ${coin.liquidityLocked ? `
+                            <div class="mt-2 p-2 bg-success bg-opacity-10 rounded">
+                                <small class="text-success"><i class="bi bi-lock-fill"></i> Liquidity Locked</small>
+                            </div>
+                        ` : ''}
+                        
                         <div class="mt-3 pt-3 border-top">
                             <a href="${coin.coinbaseUrl}" 
                                target="_blank" 
@@ -238,6 +334,12 @@ function displayDemoResults(tokens) {
     });
 }
 
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', () => {
+    populateCoinSelectors();
+    updatePortfolioDisplay();
+});
+
 // Utility function to format price
 function formatPrice(price) {
     if (!price) return 'N/A';
@@ -250,6 +352,188 @@ function formatPrice(price) {
 function formatNumber(num) {
     if (!num) return 'N/A';
     return num.toLocaleString('en-US', { maximumFractionDigits: 0 });
+}
+
+// Portfolio management
+let portfolio = [];
+
+function addToPortfolio(coinId) {
+    const coin = sampleTokens.find(t => t.id === coinId);
+    if (coin && !portfolio.find(p => p.id === coinId)) {
+        portfolio.push({ ...coin, quantity: 1 });
+        updatePortfolioDisplay();
+        showNotification(`${coin.symbol} added to portfolio!`);
+    }
+}
+
+function removeFromPortfolio(coinId) {
+    portfolio = portfolio.filter(p => p.id !== coinId);
+    updatePortfolioDisplay();
+}
+
+function updatePortfolioDisplay() {
+    const container = document.getElementById('portfolioCards');
+    
+    if (portfolio.length === 0) {
+        container.innerHTML = `
+            <div class="card w-100 text-center">
+                <div class="card-body">
+                    <i class="bi bi-inbox" style="font-size: 2rem; color: #ccc;"></i>
+                    <h5 class="card-title mt-3">Your portfolio is empty</h5>
+                    <p class="card-text text-muted">Add coins from the demo to start tracking</p>
+                </div>
+            </div>
+        `;
+        return;
+    }
+    
+    let totalValue = 0;
+    let previousTotalValue = 0;
+    
+    const cards = portfolio.map(coin => {
+        const value = coin.currentPrice * (coin.quantity || 1);
+        totalValue += value;
+        previousTotalValue += (coin.initialPrice || coin.currentPrice) * (coin.quantity || 1);
+        
+        return `
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${coin.symbol}</h5>
+                    <p class="card-text text-muted">${coin.name}</p>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Quantity:</span>
+                        <span class="fw-bold">${coin.quantity || 1}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Price:</span>
+                        <span class="fw-bold">$${formatPrice(coin.currentPrice)}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Value:</span>
+                        <span class="fw-bold">$${formatPrice(value)}</span>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger w-100" onclick="removeFromPortfolio('${coin.id}')">
+                        <i class="bi bi-trash"></i> Remove
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    container.innerHTML = cards;
+    
+    // Update portfolio summary
+    const change24h = ((totalValue - previousTotalValue) / previousTotalValue) * 100;
+    document.getElementById('totalValue').textContent = '$' + formatNumber(totalValue);
+    document.getElementById('totalChange').textContent = (change24h >= 0 ? '+' : '') + change24h.toFixed(2) + '%';
+}
+
+// Populate coin selectors
+function populateCoinSelectors() {
+    const selects = document.querySelectorAll('#coin1, #coin2');
+    selects.forEach(select => {
+        sampleTokens.forEach(coin => {
+            const option = document.createElement('option');
+            option.value = coin.id;
+            option.textContent = `${coin.symbol} - ${coin.name}`;
+            select.appendChild(option);
+        });
+    });
+}
+
+// Update comparison
+function updateComparison() {
+    const coin1Id = document.getElementById('coin1').value;
+    const coin2Id = document.getElementById('coin2').value;
+    const result = document.getElementById('comparison-result');
+    
+    if (!coin1Id || !coin2Id) {
+        result.innerHTML = '';
+        return;
+    }
+    
+    const coin1 = sampleTokens.find(t => t.id === coin1Id);
+    const coin2 = sampleTokens.find(t => t.id === coin2Id);
+    
+    result.innerHTML = `
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>${coin1.symbol}</th>
+                    <th>${coin2.symbol}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MemeScore</strong></td>
+                    <td><span class="badge bg-primary">${coin1.memeScore}</span></td>
+                    <td><span class="badge bg-primary">${coin2.memeScore}</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Current Price</strong></td>
+                    <td>$${formatPrice(coin1.currentPrice)}</td>
+                    <td>$${formatPrice(coin2.currentPrice)}</td>
+                </tr>
+                <tr>
+                    <td><strong>Price Change %</strong></td>
+                    <td><span class="price-change-${coin1.priceChangePercent >= 0 ? 'positive' : 'negative'}">
+                        ${coin1.priceChangePercent >= 0 ? '+' : ''}${coin1.priceChangePercent.toFixed(2)}%
+                    </span></td>
+                    <td><span class="price-change-${coin2.priceChangePercent >= 0 ? 'positive' : 'negative'}">
+                        ${coin2.priceChangePercent >= 0 ? '+' : ''}${coin2.priceChangePercent.toFixed(2)}%
+                    </span></td>
+                </tr>
+                <tr>
+                    <td><strong>24h Volume</strong></td>
+                    <td>$${formatNumber(coin1.volume24h)}</td>
+                    <td>$${formatNumber(coin2.volume24h)}</td>
+                </tr>
+                <tr>
+                    <td><strong>Market Cap</strong></td>
+                    <td>$${formatNumber(coin1.marketCap)}</td>
+                    <td>$${formatNumber(coin2.marketCap)}</td>
+                </tr>
+                <tr>
+                    <td><strong>Holders</strong></td>
+                    <td>${formatNumber(coin1.holders)}</td>
+                    <td>${formatNumber(coin2.holders)}</td>
+                </tr>
+                <tr>
+                    <td><strong>Twitter Followers</strong></td>
+                    <td>${formatNumber(coin1.twitterFollowers)}</td>
+                    <td>${formatNumber(coin2.twitterFollowers)}</td>
+                </tr>
+                <tr>
+                    <td><strong>Risk Level</strong></td>
+                    <td><span class="badge risk-${coin1.riskLevel.toLowerCase()}">${coin1.riskLevel}</span></td>
+                    <td><span class="badge risk-${coin2.riskLevel.toLowerCase()}">${coin2.riskLevel}</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Liquidity Locked</strong></td>
+                    <td>
+                        ${coin1.liquidityLocked ? '<i class="bi bi-check-circle text-success"></i>' : '<i class="bi bi-x-circle text-danger"></i>'}
+                    </td>
+                    <td>
+                        ${coin2.liquidityLocked ? '<i class="bi bi-check-circle text-success"></i>' : '<i class="bi bi-x-circle text-danger"></i>'}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    `;
+}
+
+// Show notification
+function showNotification(message) {
+    const alert = document.createElement('div');
+    alert.className = 'alert alert-success alert-dismissible fade show position-fixed bottom-0 end-0 m-3';
+    alert.setAttribute('role', 'alert');
+    alert.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alert);
+    setTimeout(() => alert.remove(), 3000);
 }
 
 // Load demo data on page load

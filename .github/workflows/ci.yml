@@ -35,3 +35,7 @@ jobs:
     - name: Run linter (if exists)
       run: npm run lint --if-present
       continue-on-error: true
+
+    - name: Check code quality
+      run: npm run test --if-present
+      continue-on-error: true

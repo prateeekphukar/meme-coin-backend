@@ -22,6 +22,8 @@ model Token {
   address         String          @unique
   chainId         String
   chain           Chain           @relation(fields: [chainId], references: [id])
+  
+  // Price & market data
   priceUsd        Float?
   marketCap       Float?
   volume24h       Float?
@@ -29,8 +31,44 @@ model Token {
   coinbaseUrl     String?
   launchDate      DateTime?
   initialPrice    Float?
+  allTimeHigh     Float?
+  allTimeHighDate DateTime?
+  allTimeLow      Float?
+  
+  // Social metrics
+  twitterFollowers    Int?
+  twitterUrl          String?
+  telegramMembers     Int?
+  telegramUrl         String?
+  discordMembers      Int?
+  redditSubscribers   Int?
+  
+  // Contract & security
+  contractVerified    Boolean  @default(false)
+  contractRenounced   Boolean  @default(false)
+  liquidityLocked     Boolean  @default(false)
+  liquidityLockUntil  DateTime?
+  
+  // Trading metrics
+  holders             Int?      @default(0)
+  topHoldersPercent   Float?
+  buyCount24h         Int?
+  sellCount24h        Int?
+  uniqueBuyers24h     Int?
+  
+  // Metadata
+  description         String?
+  website             String?
+  logoUrl             String?
+  tags                String[]
+  
+  // Relations
   snapshots       TokenSnapshot[]
   watchlists      WatchlistToken[]
+  liquidityPools  LiquidityPool[]
+  riskAnalysis    TokenRiskAnalysis?
+  transactions    TokenTransaction[]
+  
   createdAt       DateTime        @default(now())
   updatedAt       DateTime        @updatedAt
 
@@ -38,18 +76,77 @@ model Token {
   @@index([address])
   @@index([launchDate(sort: Desc)])
   @@index([volume24h(sort: Desc)])
+  @@index([holders(sort: Desc)])
+  @@index([twitterFollowers(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
 }
 
 model TokenSnapshot {
-  id        String   @id @default(uuid())
-  tokenId   String
-  token     Token    @relation(fields: [tokenId], references: [id])
-  priceUsd  Float
-  volume24h Float?
-  memeScore Float
-  timestamp DateTime @default(now())
+  id               String   @id @default(uuid())
+  tokenId          String
+  token            Token    @relation(fields: [tokenId], references: [id])
+  priceUsd         Float
+  volume24h        Float?
+  memeScore        Float
+  holders          Int?
+  liquidityUsd     Float?
+  buyPressure      Float?
+  marketCapRank    Int?
+  twitterFollowers Int?
+  timestamp        DateTime @default(now())
 
   @@index([tokenId, timestamp])
+}
+
+model LiquidityPool {
+  id              String   @id @default(uuid())
+  tokenId         String
+  token           Token    @relation(fields: [tokenId], references: [id])
+  dexName         String
+  pairAddress     String   @unique
+  liquidityUsd    Float
+  baseToken       String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([tokenId])
+  @@index([liquidityUsd(sort: Desc)])
+}
+
+model TokenRiskAnalysis {
+  id                    String   @id @default(uuid())
+  tokenId               String   @unique
+  token                 Token    @relation(fields: [tokenId], references: [id])
+  
+  rugPullRisk           Float    @default(50)
+  volatilityRisk        Float    @default(50)
+  liquidityRisk         Float    @default(50)
+  holderConcentration   Float    @default(50)
+  overallRiskScore      Float    @default(50)
+  riskLevel             String   @default("MEDIUM")
+  
+  redFlags              String[]
+  greenFlags            String[]
+  
+  analyzedAt            DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model TokenTransaction {
+  id            String   @id @default(uuid())
+  tokenId       String
+  token         Token    @relation(fields: [tokenId], references: [id])
+  txHash        String   @unique
+  blockNumber   Int
+  type          String
+  fromAddress   String
+  toAddress     String
+  amountUsd     Float
+  priceUsd      Float
+  timestamp     DateTime @default(now())
+  
+  @@index([tokenId, timestamp])
+  @@index([timestamp(sort: Desc)])
 }
 
 model User {

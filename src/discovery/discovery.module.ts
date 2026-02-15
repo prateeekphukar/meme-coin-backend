@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { DiscoveryController } from './discovery.controller';
 import { DiscoveryService } from './discovery.service';
 import { PrismaModule } from '../prisma/prisma.module';
+import { ScoringModule } from '../scoring/scoring.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, ScoringModule],
   controllers: [DiscoveryController],
   providers: [DiscoveryService],
 })
