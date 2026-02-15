@@ -136,9 +136,9 @@ The showcase comprehensively covers all new features added to MemeScout:
 - View price history and % change since launch
 - Interactive demo with adjustable parameters
 
-### ✅ Coinbase Integration
-- Every token includes clickable Coinbase URL
-- Direct links to trade on Coinbase
+### ✅ CoinMarketCap Integration
+- Every token includes clickable CoinMarketCap URL
+- Direct links to view market data on CoinMarketCap
 - Seamless user experience
 
 ### ✅ Price History

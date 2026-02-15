@@ -39,7 +39,7 @@ MemeScout is a **comprehensive backend API** for discovering trending meme coins
 - 🔍 **Real-time coin discovery** from DEX APIs (DexScreener, CoinGecko)
 - 📊 **Intelligent scoring system** based on momentum, liquidity, and stability
 - 💰 **Price tracking** with historical data and trend analysis
-- 🔗 **Direct Coinbase integration** with clickable links to coin pages
+- 🔗 **Direct CoinMarketCap integration** with clickable links to market data
 - 🆕 **New launches tracker** for finding hot new coins
 - 📱 **Mobile-optimized** RESTful API with JWT authentication
 - ⚡ **High-performance** caching with Redis
@@ -81,7 +81,7 @@ Optimized for high-performance mobile clients:
 <td>
 
 ### 🆕 Latest Features
-- 🔗 **Clickable Coinbase URLs**: Direct links to coin pages
+- 🔗 **Clickable CoinMarketCap URLs**: Direct links to market data
 - 🚀 **New Launches Tracker**: Find coins with high volume
 - 📈 **Price History**: Historical data with snapshots
 - 📊 **Price Change**: Auto-calculated % change since launch
@@ -159,7 +159,7 @@ open http://localhost:3000/docs
 
 ### Token Endpoints
 ```bash
-# Get all tokens with Coinbase links
+# Get all tokens with CoinMarketCap links
 GET /api/v1/tokens?limit=100&offset=0
 
 # Get newly launched coins with high volume
@@ -174,13 +174,13 @@ GET /api/v1/tokens/:id
 # Get token price history
 GET /api/v1/tokens/:id/price-history?days=30
 
-# Sync Coinbase URLs for all tokens
+# Sync CoinMarketCap URLs for all tokens
 POST /api/v1/tokens/sync-coinbase-urls
 ```
 
 ### Watchlist Endpoints
 ```bash
-# Get user watchlists with coin Coinbase links
+# Get user watchlists with CoinMarketCap links
 GET /api/v1/watchlists/user/:userId
 ```
 
@@ -194,7 +194,7 @@ GET /api/v1/watchlists/user/:userId
 
 ## 📖 Feature Documentation
 
-- [Coinbase URLs Integration](COINBASE_URLS.md) - Learn how to use clickable Coinbase links
+- [CoinMarketCap URLs Integration](COINBASE_URLS.md) - Learn how to use clickable CoinMarketCap links
 - [New Launches Feature](NEW_LAUNCHES_FEATURE.md) - Complete guide to newly launched coins endpoint
 - [Frontend Integration Examples](examples/) - Ready-to-use HTML/JS examples with clickable links
 
@@ -207,7 +207,7 @@ open examples/frontend-integration.html
 ```
 
 Key features in the example:
-- ✅ Clickable coin cards that link to Coinbase
+- ✅ Clickable coin cards that link to CoinMarketCap
 - ✅ Hover effects and smooth animations
 - ✅ Newly launched coins section
 - ✅ Price history and volume display
