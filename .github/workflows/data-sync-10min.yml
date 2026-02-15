@@ -1,0 +1,156 @@
+name: Data Sync - Every 10 Minutes
+
+on:
+  schedule:
+    # Runs every 10 minutes
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync-data:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: memescout
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD || 'dev-password' }}
+          POSTGRES_DB: memescout
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Setup environment
+      run: |
+        echo "DATABASE_URL=postgresql://memescout:${{ secrets.DB_PASSWORD || 'dev-password' }}@localhost:5432/memescout" > .env
+        echo "NODE_ENV=production" >> .env
+        echo "REDIS_URL=redis://localhost:6379" >> .env
+
+    - name: Wait for database
+      run: |
+        npm install -g wait-on
+        wait-on postgresql://memescout:${{ secrets.DB_PASSWORD || 'dev-password' }}@localhost:5432/memescout --timeout 30000
+
+    - name: Generate Prisma Client
+      run: npm run prisma:generate
+
+    - name: Run migrations
+      run: npx prisma migrate deploy || echo "No migrations to run"
+
+    - name: Sync token data from DEX
+      run: npm run data:sync
+      continue-on-error: true
+
+    - name: Archive old snapshots (older than 2 years)
+      run: |
+        npx ts-node -e "
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        const twoYearsAgo = new Date(Date.now() - 730 * 24 * 60 * 60 * 1000);
+        
+        async function archiveSnapshots() {
+          try {
+            const oldSnapshots = await prisma.tokenSnapshot.findMany({
+              where: { timestamp: { lt: twoYearsAgo } },
+              take: 10000
+            });
+            
+            if (oldSnapshots.length > 0) {
+              await prisma.snapshotArchive.createMany({
+                data: oldSnapshots.map(s => ({
+                  tokenId: s.tokenId,
+                  priceUsd: s.priceUsd,
+                  volume24h: s.volume24h,
+                  memeScore: s.memeScore,
+                  holders: s.holders,
+                  liquidityUsd: s.liquidityUsd,
+                  buyPressure: s.buyPressure,
+                  marketCapRank: s.marketCapRank,
+                  twitterFollowers: s.twitterFollowers,
+                  timestamp: s.timestamp
+                }))
+              });
+              
+              await prisma.tokenSnapshot.deleteMany({
+                where: { id: { in: oldSnapshots.map(s => s.id) } }
+              });
+              
+              console.log(\`Archived \${oldSnapshots.length} snapshots\`);
+            }
+          } catch (error) {
+            console.error('Archive error:', error.message);
+          } finally {
+            await prisma.\$disconnect();
+          }
+        }
+        
+        archiveSnapshots();
+        "
+      continue-on-error: true
+
+    - name: Clean stale data
+      run: |
+        npx ts-node -e "
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        
+        async function cleanData() {
+          try {
+            // Delete sync jobs older than 30 days
+            const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+            const deletedJobs = await prisma.dataSyncJob.deleteMany({
+              where: { 
+                completedAt: { lt: thirtyDaysAgo },
+                status: 'COMPLETED'
+              }
+            });
+            
+            console.log(\`Deleted \${deletedJobs.count} old sync jobs\`);
+          } catch (error) {
+            console.error('Cleanup error:', error.message);
+          } finally {
+            await prisma.\$disconnect();
+          }
+        }
+        
+        cleanData();
+        "
+      continue-on-error: true
+
+    - name: Log sync status
+      if: always()
+      run: |
+        echo "Data sync completed at $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+        echo "Job Status: ${{ job.status }}"
+
+    - name: Notify on failure
+      if: failure()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '⚠️ Data sync workflow failed. Check the logs: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}'
+          })
+      continue-on-error: true

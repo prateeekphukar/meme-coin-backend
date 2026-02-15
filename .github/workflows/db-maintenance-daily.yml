@@ -1,0 +1,224 @@
+name: Database Maintenance - Daily
+
+on:
+  schedule:
+    # Runs at 2 AM UTC daily
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  db-maintenance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: memescout
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD || 'dev-password' }}
+          POSTGRES_DB: memescout
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Setup environment
+      run: |
+        echo "DATABASE_URL=postgresql://memescout:${{ secrets.DB_PASSWORD || 'dev-password' }}@localhost:5432/memescout" > .env
+        echo "NODE_ENV=production" >> .env
+
+    - name: Wait for database
+      run: |
+        npm install -g wait-on
+        wait-on postgresql://memescout:${{ secrets.DB_PASSWORD || 'dev-password' }}@localhost:5432/memescout --timeout 30000
+
+    - name: Generate Prisma Client
+      run: npm run prisma:generate
+
+    - name: Run database migrations
+      run: npx prisma migrate deploy || echo "No migrations to run"
+
+    - name: Archive snapshots older than 2 years
+      run: |
+        npx ts-node -e "
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        const twoYearsAgo = new Date(Date.now() - 730 * 24 * 60 * 60 * 1000);
+        
+        async function archiveOldSnapshots() {
+          try {
+            console.log('Starting archive process for snapshots older than:', twoYearsAgo);
+            
+            let totalArchived = 0;
+            let batchSize = 50000;
+            
+            // Process in batches to avoid memory issues
+            while (true) {
+              const oldSnapshots = await prisma.tokenSnapshot.findMany({
+                where: { timestamp: { lt: twoYearsAgo } },
+                take: batchSize
+              });
+              
+              if (oldSnapshots.length === 0) break;
+              
+              // Create archives
+              await prisma.snapshotArchive.createMany({
+                data: oldSnapshots.map(s => ({
+                  tokenId: s.tokenId,
+                  priceUsd: s.priceUsd,
+                  volume24h: s.volume24h,
+                  memeScore: s.memeScore,
+                  holders: s.holders,
+                  liquidityUsd: s.liquidityUsd,
+                  buyPressure: s.buyPressure,
+                  marketCapRank: s.marketCapRank,
+                  twitterFollowers: s.twitterFollowers,
+                  timestamp: s.timestamp
+                }))
+              });
+              
+              // Delete archived snapshots
+              const deleteResult = await prisma.tokenSnapshot.deleteMany({
+                where: { id: { in: oldSnapshots.map(s => s.id) } }
+              });
+              
+              totalArchived += deleteResult.count;
+              console.log(\`Archived batch of \${deleteResult.count} snapshots\`);
+            }
+            
+            console.log(\`Total snapshots archived: \${totalArchived}\`);
+            return totalArchived;
+          } catch (error) {
+            console.error('Archive error:', error);
+            throw error;
+          } finally {
+            await prisma.\$disconnect();
+          }
+        }
+        
+        archiveOldSnapshots();
+        "
+
+    - name: Optimize database indexes
+      run: |
+        npx ts-node -e "
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        
+        async function optimizeDb() {
+          try {
+            console.log('Running VACUUM ANALYZE on database...');
+            await prisma.\$executeRaw\`VACUUM ANALYZE;\`;
+            console.log('Database optimization completed');
+          } catch (error) {
+            console.error('Optimization error:', error.message);
+          } finally {
+            await prisma.\$disconnect();
+          }
+        }
+        
+        optimizeDb();
+        "
+      continue-on-error: true
+
+    - name: Remove inactive tokens
+      run: |
+        npx ts-node -e "
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        const sixMonthsAgo = new Date(Date.now() - 180 * 24 * 60 * 60 * 1000);
+        
+        async function removeInactiveTokens() {
+          try {
+            // Find tokens with no recent snapshots
+            const inactiveTokens = await prisma.token.findMany({
+              where: {
+                updatedAt: { lt: sixMonthsAgo }
+              },
+              select: { id: true, symbol: true }
+            });
+            
+            console.log(\`Found \${inactiveTokens.length} inactive tokens\`);
+            
+            if (inactiveTokens.length > 0) {
+              // Mark as inactive in a real scenario, or delete if you prefer
+              console.log('Inactive tokens identified (no auto-delete for safety)');
+            }
+          } catch (error) {
+            console.error('Cleanup error:', error.message);
+          } finally {
+            await prisma.\$disconnect();
+          }
+        }
+        
+        removeInactiveTokens();
+        "
+      continue-on-error: true
+
+    - name: Generate database statistics
+      run: |
+        npx ts-node -e "
+        const { PrismaClient } = require('@prisma/client');
+        const prisma = new PrismaClient();
+        
+        async function generateStats() {
+          try {
+            const tokenCount = await prisma.token.count();
+            const snapshotCount = await prisma.tokenSnapshot.count();
+            const archiveCount = await prisma.snapshotArchive.count();
+            const recentSnapshot = await prisma.tokenSnapshot.findFirst({
+              orderBy: { timestamp: 'desc' }
+            });
+            
+            const stats = {
+              timestamp: new Date().toISOString(),
+              totalTokens: tokenCount,
+              activeSnapshots: snapshotCount,
+              archivedSnapshots: archiveCount,
+              latestSnapshot: recentSnapshot?.timestamp,
+              snapshotAgeHours: recentSnapshot ? Math.round((Date.now() - recentSnapshot.timestamp) / (1000 * 60 * 60)) : null
+            };
+            
+            console.log('Database Statistics:');
+            console.log(JSON.stringify(stats, null, 2));
+          } catch (error) {
+            console.error('Stats error:', error.message);
+          } finally {
+            await prisma.\$disconnect();
+          }
+        }
+        
+        generateStats();
+        "
+
+    - name: Upload maintenance report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: db-maintenance-log
+        path: |
+          .github/workflows/data-sync-10min.yml
+        retention-days: 30
+
+    - name: Slack notification (if configured)
+      if: always()
+      run: |
+        echo "Database maintenance completed at $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+        echo "Status: ${{ job.status }}"

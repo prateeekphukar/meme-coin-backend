@@ -59,18 +59,35 @@ export class DiscoveryService {
     const tokens = await this.prisma.token.findMany({
       where,
       orderBy,
-      take: limit * 2, // Fetch more to filter by liquidity/risk
-      include: {
+      take: limit * 2,
+      select: {
+        id: true,
+        symbol: true,
+        name: true,
+        address: true,
+        priceUsd: true,
+        volume24h: true,
+        memeScore: true,
+        holders: true,
+        liquidityLocked: true,
+        liquidityPools: {
+          select: {
+            liquidityUsd: true,
+          },
+        },
+        riskAnalysis: {
+          select: {
+            riskLevel: true,
+          },
+        },
         chain: true,
-        riskAnalysis: true,
-        liquidityPools: true,
       },
     });
 
     // Filter by calculated fields
     const riskLevels = ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'];
-    const filtered = tokens.filter((token) => {
-      const totalLiq = token.liquidityPools.reduce((sum, p) => sum + p.liquidityUsd, 0);
+    const filtered = tokens.filter((token: any) => {
+      const totalLiq = token.liquidityPools?.reduce((sum: number, p: any) => sum + (p.liquidityUsd || 0), 0) || 0;
       const passesLiquidity = totalLiq >= minLiquidity;
       
       const passesRisk = 
@@ -141,20 +158,19 @@ export class DiscoveryService {
           take: 2,
         },
         chain: true,
-        riskAnalysis: true,
       },
       take: 100,
     });
 
     // Calculate growth rate
     const tokensWithGrowth = tokens
-      .map((token) => {
-        if (token.snapshots.length < 2) return null;
+      .map((token: any) => {
+        if (!token.snapshots || token.snapshots.length < 2) return null;
         
         const oldest = token.snapshots[0];
         const latest = token.snapshots[token.snapshots.length - 1];
         
-        if (!oldest.holders || !latest.holders) return null;
+        if (!oldest?.holders || !latest?.holders) return null;
         
         const growthRate = ((latest.holders - oldest.holders) / oldest.holders) * 100;
         
@@ -163,8 +179,8 @@ export class DiscoveryService {
           growthRate,
         };
       })
-      .filter(t => t !== null)
-      .sort((a, b) => (b?.growthRate || 0) - (a?.growthRate || 0))
+      .filter((t: any) => t !== null)
+      .sort((a: any, b: any) => (b?.growthRate || 0) - (a?.growthRate || 0))
       .slice(0, limit);
 
     return tokensWithGrowth;

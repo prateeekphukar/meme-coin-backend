@@ -8,6 +8,8 @@ import { WatchlistModule } from './watchlist/watchlist.module';
 import { AlertModule } from './alert/alert.module';
 import { DiscoveryModule } from './discovery/discovery.module';
 import { ScoringModule } from './scoring/scoring.module';
+import { ScheduledTasksModule } from './scheduled-tasks/scheduled-tasks.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -20,6 +22,8 @@ import { ScoringModule } from './scoring/scoring.module';
     AlertModule,
     DiscoveryModule,
     ScoringModule,
+    ScheduledTasksModule,
+    HealthModule,
   ],
 })
 export class AppModule {}

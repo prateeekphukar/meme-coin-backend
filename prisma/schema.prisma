@@ -96,6 +96,41 @@ model TokenSnapshot {
   timestamp        DateTime @default(now())
 
   @@index([tokenId, timestamp])
+  @@index([timestamp(sort: Desc)])
+}
+
+model SnapshotArchive {
+  id               String   @id @default(uuid())
+  tokenId          String
+  priceUsd         Float
+  volume24h        Float?
+  memeScore        Float
+  holders          Int?
+  liquidityUsd     Float?
+  buyPressure      Float?
+  marketCapRank    Int?
+  twitterFollowers Int?
+  timestamp        DateTime
+  archivedAt       DateTime @default(now())
+
+  @@index([tokenId, timestamp])
+  @@index([timestamp(sort: Desc)])
+  @@index([archivedAt])
+}
+
+model DataSyncJob {
+  id           String   @id @default(uuid())
+  jobType      String
+  status       String   @default("PENDING")
+  tokensCount  Int?
+  snapshotsAdded Int?
+  errors       String?
+  startedAt    DateTime @default(now())
+  completedAt  DateTime?
+  duration      Int?
+  
+  @@index([jobType, completedAt])
+  @@index([status])
 }
 
 model LiquidityPool {
