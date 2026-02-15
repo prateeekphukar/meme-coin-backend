@@ -24,7 +24,11 @@ model Token {
   chain           Chain           @relation(fields: [chainId], references: [id])
   priceUsd        Float?
   marketCap       Float?
+  volume24h       Float?
   memeScore       Float?          @default(0)
+  coinbaseUrl     String?
+  launchDate      DateTime?
+  initialPrice    Float?
   snapshots       TokenSnapshot[]
   watchlists      WatchlistToken[]
   createdAt       DateTime        @default(now())
@@ -32,6 +36,8 @@ model Token {
 
   @@index([memeScore(sort: Desc)])
   @@index([address])
+  @@index([launchDate(sort: Desc)])
+  @@index([volume24h(sort: Desc)])
 }
 
 model TokenSnapshot {
