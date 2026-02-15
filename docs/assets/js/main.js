@@ -228,15 +228,16 @@ function displayDemoResults(tokens) {
         ).join('') : '';
         
         col.innerHTML = `
-            <div class="card h-100 border-primary">
+            <div class="card h-100 border-primary" style="cursor: pointer;">
                 <div class="card-body">
                     <a href="${coin.coinbaseUrl}" 
                        target="_blank" 
                        rel="noopener noreferrer" 
-                       class="text-decoration-none">
+                       class="card-link-header"
+                       style="display: block; text-decoration: none; color: inherit; transition: all 0.2s;">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
-                                <h4 class="mb-0 fw-bold text-dark">
+                                <h4 class="mb-0 fw-bold text-dark" style="color: #667eea;">
                                     ${coin.symbol}
                                     <i class="bi bi-box-arrow-up-right" style="font-size: 0.8rem; opacity: 0.6;"></i>
                                 </h4>
