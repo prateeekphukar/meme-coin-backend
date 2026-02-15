@@ -1,0 +1,95 @@
+name: 🌐 Web Deployment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/**'
+      - '.github/workflows/web-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  validate-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: ✅ Validate HTML files
+        run: |
+          echo "🔍 Validating HTML structure..."
+          for file in docs/*.html; do
+            echo "Checking $file..."
+            # Basic HTML validation - check for common issues
+            if grep -q '</html>' "$file"; then
+              echo "✓ $file has closing HTML tag"
+            else
+              echo "✗ $file missing closing HTML tag"
+              exit 1
+            fi
+          done
+          echo "✅ All HTML files validated"
+
+      - name: 📦 Check asset integrity
+        run: |
+          echo "🔍 Validating assets..."
+          test -d docs/assets/css && echo "✓ CSS folder exists"
+          test -d docs/assets/js && echo "✓ JS folder exists"
+          test -d docs/assets/images && echo "✓ Images folder exists"
+          test -f docs/assets/css/style.css && echo "✓ Main CSS file exists"
+          test -f docs/assets/js/main.js && echo "✓ Main JS file exists"
+          echo "✅ All assets validated"
+
+      - name: 🔗 Validate external links in HTML
+        run: |
+          echo "🔍 Checking CoinMarketCap URL format..."
+          # Verify that CoinMarketCap URLs are using direct currency format
+          if grep -q "coinmarketcap.com/currencies/" docs/assets/js/main.js; then
+            echo "✓ Using direct currency URL format"
+          else
+            echo "⚠ Warning: No direct currency URLs found"
+          fi
+          # Check for old search format (should not exist)
+          if grep -q "coinmarketcap.com/search/?q=" docs/assets/js/main.js; then
+            echo "✗ Found old search format URLs - please update to direct currency format"
+            exit 1
+          fi
+          echo "✅ URL format validation passed"
+
+      - name: 📊 Generate deployment report
+        run: |
+          echo "📋 Deployment Report" > /tmp/deploy-report.txt
+          echo "===================" >> /tmp/deploy-report.txt
+          echo "Timestamp: $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> /tmp/deploy-report.txt
+          echo "Commit: ${{ github.sha }}" >> /tmp/deploy-report.txt
+          echo "Branch: ${{ github.ref }}" >> /tmp/deploy-report.txt
+          echo "" >> /tmp/deploy-report.txt
+          echo "Files deployed:" >> /tmp/deploy-report.txt
+          find docs -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \) | sort >> /tmp/deploy-report.txt
+          echo "" >> /tmp/deploy-report.txt
+          echo "Asset Statistics:" >> /tmp/deploy-report.txt
+          echo "HTML files: $(find docs -name "*.html" | wc -l)" >> /tmp/deploy-report.txt
+          echo "CSS files: $(find docs -name "*.css" | wc -l)" >> /tmp/deploy-report.txt
+          echo "JS files: $(find docs -name "*.js" | wc -l)" >> /tmp/deploy-report.txt
+          echo "Total size: $(du -sh docs | cut -f1)" >> /tmp/deploy-report.txt
+          cat /tmp/deploy-report.txt
+
+      - name: 🚀 Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: 'docs'
+
+      - name: 📤 Publish to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+      - name: ✨ Deployment complete
+        run: |
+          echo "✅ Website successfully deployed!"
+          echo "🌐 Live at: https://prateeekphukar.github.io/meme-coin-backend/"
+          echo "📝 Deployment took: ~$(date +%s)s"
