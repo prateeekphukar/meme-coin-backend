@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Using APIs for Real-Time Market Data - MemeScout Blog">
+    <title>Using APIs for Real-Time Market Data - MemeScout Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html"><span class="brand-icon">🚀</span> MemeScout</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="../blog.html">Blog</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <article class="article-container">
+        <div class="container">
+            <div class="article-header">
+                <h1 class="article-title">Using APIs for Real-Time Market Data</h1>
+                <div class="article-meta">
+                    <span class="article-date"><i class="bi bi-calendar"></i> February 7, 2026</span>
+                    <span class="article-category"><i class="bi bi-tag"></i> Developer Guide</span>
+                    <span class="article-read-time"><i class="bi bi-clock"></i> 8 min read</span>
+                </div>
+            </div>
+
+            <div class="article-content">
+                <p class="lead">Building real-time trading applications requires fast, reliable API data. Learn how to integrate market data from multiple sources.</p>
+
+                <h2>Available Data Sources</h2>
+                <h3>1. MemeScout API (Our Service)</h3>
+                <p>Real-time MemeScore calculations, liquidity analysis, and risk metrics optimized for meme coins.</p>
+
+                <h3>2. CoinGecko API</h3>
+                <p>Free, no-auth-required access to historical price data and market cap information. 50 calls/minute rate limit.</p>
+
+                <h3>3. Etherscan/Blockscan APIs</h3>
+                <p>Low-level blockchain data: transaction history, token holders, contract verification status.</p>
+
+                <h3>4. DEX APIs</h3>
+                <p>Direct data from Uniswap, PancakeSwap, Raydium. Most accurate for on-chain trades.</p>
+
+                <h2>MemeScout API Endpoints for Data</h2>
+                <pre><code class="language-javascript">
+// Get new launches with volume filter
+GET /api/v1/tokens/new-launches?maxDays=7&minVolume=100000
+
+// Get price history for technical analysis
+GET /api/v1/tokens/:id/price-history?days=30
+
+// Get trending coins with advanced filters
+GET /api/v1/discovery/trending?minScore=70&maxDaysOld=7
+
+// Compare risk metrics
+GET /api/v1/scoring/risk/:tokenId
+                </code></pre>
+
+                <h2>Building an Integration</h2>
+                <p><strong>Step 1: Set up polling</strong> - Fetch data every 10-60 seconds depending on needs</p>
+                <p><strong>Step 2: Store in database</strong> - Keep historical data for analysis</p>
+                <p><strong>Step 3: Calculate metrics</strong> - MemeScore, volatility, correlations</p>
+                <p><strong>Step 4: Alert on signals</strong> - Email, SMS, or webhook notifications</p>
+
+                <h2>Rate Limiting & Best Practices</h2>
+                <ul>
+                    <li>Implement exponential backoff for failed requests</li>
+                    <li>Batch requests where possible</li>
+                    <li>Cache responses to minimize API calls</li>
+                    <li>Monitor health checks and fallback providers</li>
+                </ul>
+
+                <h2>Real-World Example: Momentum Scanner</h2>
+                <pre><code class="language-javascript">
+// Fetch top trending coins
+const coins = await api.discovery.trending({
+  minScore: 70,
+  maxDaysOld: 7,
+  sortBy: 'momentum'
+});
+
+// Filter by liquidity and risk
+const opportunities = coins.filter(c => 
+  c.liquidityUsd > 100000 && 
+  c.riskLevel !== 'CRITICAL'
+);
+
+// Alert on new opportunities
+opportunities.forEach(coin => {
+  sendAlert(`${coin.symbol}: Score ${coin.memeScore}, Risk: ${coin.riskLevel}`);
+});
+                </code></pre>
+
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> <strong>Pro Tip:</strong> Combine data from multiple sources. No single API has everything. Triangulation gives you the full picture.
+                </div>
+
+                <div class="article-cta">
+                    <a href="https://github.com/prateeekphukar/meme-coin-backend#-api-endpoints" class="btn btn-primary btn-lg me-3" target="_blank">
+                        View Full API Docs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="text-center">
+                <p class="text-muted">&copy; 2026 MemeScout. Built with <i class="bi bi-heart text-danger"></i> and TypeScript.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

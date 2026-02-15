@@ -8,13 +8,20 @@ export class TokenService {
 
   /**
    * Generate CoinMarketCap URL for a token based on its symbol
+   * Converts to direct currency page URL (e.g., /currencies/bitcoin/)
    * @param symbol Token symbol (e.g., 'BTC', 'ETH', 'DOGE')
-   * @returns CoinMarketCap URL
+   * @returns CoinMarketCap direct currency URL
    */
   generateCoinbaseUrl(symbol: string): string {
-    // CoinMarketCap search URL - works for any symbol
-    const normalizedSymbol = symbol.toUpperCase();
-    return `https://coinmarketcap.com/search?q=${normalizedSymbol}`;
+    // Convert symbol to URL-friendly slug
+    // E.g., 'MOONROCK' -> 'moonrock', 'PEPE MAX' -> 'pepe-max'
+    const slug = symbol
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')        // replace spaces with hyphens
+      .replace(/[^\w\-]/g, '');    // remove special characters
+    
+    return `https://coinmarketcap.com/currencies/${slug}/`;
   }
 
   /**

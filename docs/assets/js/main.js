@@ -20,7 +20,7 @@ const sampleTokens = [
         id: '1',
         symbol: 'MOONROCK',
         name: 'Moon Rock Token',
-        coinbaseUrl: 'https://coinmarketcap.com/search/?q=MOONROCK',  // CoinMarketCap search
+        coinbaseUrl: 'https://coinmarketcap.com/currencies/moonrock/',
         currentPrice: 0.0025,
         initialPrice: 0.001,
         priceChangePercent: 150,
@@ -39,7 +39,7 @@ const sampleTokens = [
         id: '2',
         symbol: 'ROCKETMEME',
         name: 'Rocket Meme Coin',
-        coinbaseUrl: 'https://coinmarketcap.com/search/?q=ROCKETMEME',  // CoinMarketCap search
+        coinbaseUrl: 'https://coinmarketcap.com/currencies/rocketmeme/',
         currentPrice: 0.015,
         initialPrice: 0.005,
         priceChangePercent: 200,
@@ -58,7 +58,7 @@ const sampleTokens = [
         id: '3',
         symbol: 'DOGEX',
         name: 'Doge X Token',
-        coinbaseUrl: 'https://coinmarketcap.com/search/?q=DOGEX',  // CoinMarketCap search
+        coinbaseUrl: 'https://coinmarketcap.com/currencies/dogex/',
         currentPrice: 0.0085,
         initialPrice: 0.003,
         priceChangePercent: 183,
@@ -77,7 +77,7 @@ const sampleTokens = [
         id: '4',
         symbol: 'PEPEMAX',
         name: 'Pepe Maximalist',
-        coinbaseUrl: 'https://coinmarketcap.com/search/?q=PEPEMAX',  // CoinMarketCap search
+        coinbaseUrl: 'https://coinmarketcap.com/currencies/pepemax/',
         currentPrice: 0.0012,
         initialPrice: 0.0008,
         priceChangePercent: 50,
@@ -96,7 +96,7 @@ const sampleTokens = [
         id: '5',
         symbol: 'SHIB2',
         name: 'Shiba Inu 2.0',
-        coinbaseUrl: 'https://coinmarketcap.com/search/?q=SHIB2',  // CoinMarketCap search
+        coinbaseUrl: 'https://coinmarketcap.com/currencies/shiba-inu-2/',
         currentPrice: 0.0035,
         initialPrice: 0.002,
         priceChangePercent: 75,
@@ -115,7 +115,7 @@ const sampleTokens = [
         id: '6',
         symbol: 'FLOKI3',
         name: 'Floki Evolution',
-        coinbaseUrl: 'https://coinmarketcap.com/search/?q=FLOKI3',  // CoinMarketCap search
+        coinbaseUrl: 'https://coinmarketcap.com/currencies/floki-evolution/',
         currentPrice: 0.0068,
         initialPrice: 0.0025,
         priceChangePercent: 172,
