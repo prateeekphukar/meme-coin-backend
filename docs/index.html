@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MemeScout - Production-ready backend API for discovering, tracking, and analyzing meme coins with real-time data">
+    <title>MemeScout - Meme Coin Discovery & Ranking Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#home">
+                <span class="brand-icon">🚀</span> MemeScout
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#api">API</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#demo">Live Demo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank"><i class="bi bi-github"></i> GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container text-center">
+            <h1 class="display-3 fw-bold mb-4 hero-title">
+                Discover the Next Big <span class="gradient-text">Meme Coin</span>
+            </h1>
+            <p class="lead mb-5">Production-ready backend API for tracking, analyzing, and discovering trending meme coins with real-time data, intelligent scoring, and direct Coinbase integration</p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn btn-primary btn-lg me-3">
+                    <i class="bi bi-play-circle"></i> Try Live Demo
+                </a>
+                <a href="https://github.com/prateeekphukar/meme-coin-backend" class="btn btn-outline-light btn-lg" target="_blank">
+                    <i class="bi bi-github"></i> View on GitHub
+                </a>
+            </div>
+            <div class="tech-badges mt-5">
+                <span class="badge bg-dark">NestJS 10</span>
+                <span class="badge bg-dark">TypeScript 5.3</span>
+                <span class="badge bg-dark">PostgreSQL 15</span>
+                <span class="badge bg-dark">Prisma ORM</span>
+                <span class="badge bg-dark">Redis Cache</span>
+                <span class="badge bg-dark">Docker</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <i class="bi bi-graph-up-arrow stat-icon"></i>
+                        <h3 class="stat-number">Real-Time</h3>
+                        <p class="stat-label">Coin Discovery</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <i class="bi bi-speedometer2 stat-icon"></i>
+                        <h3 class="stat-number">AI-Powered</h3>
+                        <p class="stat-label">Scoring System</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <i class="bi bi-clock-history stat-icon"></i>
+                        <h3 class="stat-number">Historical</h3>
+                        <p class="stat-label">Price Tracking</p>
+                    </div>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <div class="stat-card">
+                        <i class="bi bi-shield-check stat-icon"></i>
+                        <h3 class="stat-number">Production</h3>
+                        <p class="stat-label">Ready API</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Powerful Features</h2>
+            <div class="row">
+                <!-- Feature 1 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>Real-Time Discovery</h3>
+                        <p>Automatically discover new meme coins from DEX APIs including DexScreener and CoinGecko with real-time updates</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Intelligent Scoring</h3>
+                        <p>Multi-factor analysis based on momentum, liquidity, and stability to rank coins by potential</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card featured">
+                        <div class="feature-icon">🆕</div>
+                        <h3>New Launches Tracker</h3>
+                        <p>Track newly launched meme coins with high volume, including price history and % change since launch</p>
+                        <span class="badge bg-primary">NEW</span>
+                    </div>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card featured">
+                        <div class="feature-icon">🔗</div>
+                        <h3>Coinbase Integration</h3>
+                        <p>Direct clickable links to Coinbase for instant trading - every token includes a Coinbase URL</p>
+                        <span class="badge bg-primary">NEW</span>
+                    </div>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card featured">
+                        <div class="feature-icon">📈</div>
+                        <h3>Price History</h3>
+                        <p>Historical price data with snapshots, trend analysis, and auto-calculated price changes</p>
+                        <span class="badge bg-primary">NEW</span>
+                    </div>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">👤</div>
+                        <h3>User Watchlists</h3>
+                        <p>Personalized token tracking with custom watchlists for each user</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 7 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔔</div>
+                        <h3>Smart Alerts</h3>
+                        <p>Price, score, and percentage change notifications via Firebase Cloud Messaging</p>
+                    </div>
+                </div>
+                
+                <!-- Feature 8 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card featured">
+                        <div class="feature-icon">🔥</div>
+                        <h3>Volume Filtering</h3>
+                        <p>Filter coins by 24h trading volume to find the most actively traded tokens</p>
+                        <span class="badge bg-primary">NEW</span>
+                    </div>
+                </div>
+                
+                <!-- Feature 9 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>High Performance</h3>
+                        <p>Redis-powered caching layer for lightning-fast API responses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- API Section -->
+    <section id="api" class="api-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">API Endpoints</h2>
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="api-card">
+                        <div class="api-method get">GET</div>
+                        <div class="api-details">
+                            <h4>/api/v1/tokens/new-launches</h4>
+                            <p>Get newly launched coins with high volume</p>
+                            <div class="api-params">
+                                <small><strong>Params:</strong> maxDays, minVolume, limit</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="api-card">
+                        <div class="api-method get">GET</div>
+                        <div class="api-details">
+                            <h4>/api/v1/tokens/:id/price-history</h4>
+                            <p>Get historical price data for a token</p>
+                            <div class="api-params">
+                                <small><strong>Params:</strong> days</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="api-card">
+                        <div class="api-method get">GET</div>
+                        <div class="api-details">
+                            <h4>/api/v1/tokens</h4>
+                            <p>Get all tokens with Coinbase links</p>
+                            <div class="api-params">
+                                <small><strong>Params:</strong> limit, offset</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6 mb-4">
+                    <div class="api-card">
+                        <div class="api-method get">GET</div>
+                        <div class="api-details">
+                            <h4>/api/v1/tokens/top</h4>
+                            <p>Get top tokens by meme score</p>
+                            <div class="api-params">
+                                <small><strong>Params:</strong> limit</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="https://github.com/prateeekphukar/meme-coin-backend#-api-endpoints" class="btn btn-outline-primary" target="_blank">
+                    View Full API Documentation <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Demo Section -->
+    <section id="demo" class="demo-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Live Demo - New Launches</h2>
+            <p class="text-center text-muted mb-5">Explore newly launched meme coins with high trading volume</p>
+            
+            <div id="demo-controls" class="demo-controls mb-4">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Max Days Since Launch</label>
+                        <input type="number" class="form-control" id="maxDays" value="7" min="1" max="90">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Min Volume (USD)</label>
+                        <input type="number" class="form-control" id="minVolume" value="100000" step="10000">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Limit</label>
+                        <input type="number" class="form-control" id="limit" value="6" min="1" max="20">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="loadDemoData()">
+                    <i class="bi bi-search"></i> Search Coins
+                </button>
+            </div>
+            
+            <div id="demo-loading" class="text-center" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Loading demo data...</p>
+            </div>
+            
+            <div id="demo-results" class="row"></div>
+            
+            <div id="demo-error" class="alert alert-info" role="alert" style="display: none;">
+                <i class="bi bi-info-circle"></i> This is a static demo. Connect to a live API endpoint to see real-time data.
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Built With Modern Technologies</h2>
+            <div class="row text-center">
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="tech-item">
+                        <i class="bi bi-server tech-icon-large"></i>
+                        <h5>NestJS</h5>
+                        <p>Progressive Node.js framework</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="tech-item">
+                        <i class="bi bi-database tech-icon-large"></i>
+                        <h5>PostgreSQL</h5>
+                        <p>Powerful relational database</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="tech-item">
+                        <i class="bi bi-lightning-charge tech-icon-large"></i>
+                        <h5>Prisma ORM</h5>
+                        <p>Next-gen TypeScript ORM</p>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-4">
+                    <div class="tech-item">
+                        <i class="bi bi-hdd-stack tech-icon-large"></i>
+                        <h5>Redis</h5>
+                        <p>In-memory caching</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Teaser Section -->
+    <section class="blog-teaser-section">
+        <div class="container">
+            <h2 class="section-title text-center mb-5">Latest From Our Blog</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="blog-card">
+                        <div class="blog-date">February 15, 2026</div>
+                        <h3>Building a Production-Ready Meme Coin Tracker</h3>
+                        <p>Learn how we built MemeScout from scratch using NestJS, PostgreSQL, and modern DevOps practices...</p>
+                        <a href="blog/building-memescout.html" class="blog-link">Read More <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="blog-card">
+                        <div class="blog-date">February 14, 2026</div>
+                        <h3>How to Spot the Next Big Meme Coin</h3>
+                        <p>Discover the key metrics and indicators we use to identify high-potential meme coins before they moon...</p>
+                        <a href="blog/spotting-meme-coins.html" class="blog-link">Read More <i class="bi bi-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="blog.html" class="btn btn-outline-primary">View All Posts</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container text-center">
+            <h2 class="mb-4">Ready to Start Tracking Meme Coins?</h2>
+            <p class="lead mb-5">Get started with MemeScout today and discover the next big opportunity</p>
+            <div class="cta-buttons">
+                <a href="https://github.com/prateeekphukar/meme-coin-backend" class="btn btn-light btn-lg me-3" target="_blank">
+                    <i class="bi bi-github"></i> Get Started on GitHub
+                </a>
+                <a href="https://github.com/prateeekphukar/meme-coin-backend#-quick-start" class="btn btn-outline-light btn-lg" target="_blank">
+                    View Documentation <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><span class="brand-icon">🚀</span> MemeScout</h5>
+                    <p class="text-muted">Production-ready backend API for discovering and tracking meme coins</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#api">API Documentation</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Resources</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend#-quick-start" target="_blank">Getting Started</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/NEW_LAUNCHES_FEATURE.md" target="_blank">New Launches Guide</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/COINBASE_URLS.md" target="_blank">Coinbase Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2026 MemeScout. MIT License.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Made with ❤️ by <a href="https://github.com/prateeekphukar" target="_blank">Pratik Fulkar</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

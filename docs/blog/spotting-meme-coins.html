@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn the key metrics and indicators for identifying high-potential meme coins before they moon">
+    <title>How to Spot the Next Big Meme Coin: Key Metrics and Indicators - MemeScout Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <span class="brand-icon">🚀</span> MemeScout
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html#api">API</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html#demo">Live Demo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank"><i class="bi bi-github"></i> GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Header -->
+    <article class="blog-article">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="article-header">
+                        <a href="../blog.html" class="back-link"><i class="bi bi-arrow-left"></i> Back to Blog</a>
+                        <span class="article-category">Strategy</span>
+                        <h1 class="article-title">How to Spot the Next Big Meme Coin: Key Metrics and Indicators</h1>
+                        <div class="article-meta">
+                            <span class="author"><i class="bi bi-person"></i> Pratik Fulkar</span>
+                            <span class="date"><i class="bi bi-calendar3"></i> February 14, 2026</span>
+                            <span class="read-time"><i class="bi bi-clock"></i> 6 min read</span>
+                        </div>
+                        <div class="article-tags mt-3">
+                            <span class="badge bg-secondary">Analysis</span>
+                            <span class="badge bg-secondary">Trading</span>
+                            <span class="badge bg-secondary">Metrics</span>
+                            <span class="badge bg-secondary">Strategy</span>
+                        </div>
+                    </div>
+
+                    <!-- Article Content -->
+                    <div class="article-content">
+                        <p class="lead">
+                            The meme coin market is notoriously volatile, but with the right metrics and indicators, you can identify promising projects before they explode. In this guide, I'll share the exact framework we use in MemeScout to evaluate and score meme coins.
+                        </p>
+
+                        <div class="alert alert-warning">
+                            <strong>⚠️ Disclaimer:</strong> This article is for educational purposes only. Meme coins are highly speculative and risky. Always do your own research and never invest more than you can afford to lose.
+                        </div>
+
+                        <h2>The MemeScore Framework</h2>
+                        <p>
+                            At MemeScout, we've developed a multi-factor scoring system that evaluates meme coins across three key dimensions: <strong>momentum</strong>, <strong>liquidity</strong>, and <strong>stability</strong>. Each dimension tells us something different about a coin's potential.
+                        </p>
+
+                        <h2>1. Momentum Indicators 🚀</h2>
+                        <p>
+                            Momentum measures how quickly a coin is gaining traction. Strong momentum often precedes significant price movements.
+                        </p>
+
+                        <h3>Trading Volume (24h)</h3>
+                        <div class="metric-card">
+                            <h4>What It Tells Us</h4>
+                            <p>
+                                24-hour trading volume is the most important momentum indicator. It shows real buying and selling activity, not just holder count. A coin with $500K+ daily volume has crossed a critical threshold of market interest.
+                            </p>
+                            <h4>How We Use It</h4>
+                            <ul>
+                                <li><strong>$100K+:</strong> Minimum threshold for consideration</li>
+                                <li><strong>$500K+:</strong> Strong momentum, worthy of attention</li>
+                                <li><strong>$1M+:</strong> Viral momentum, high potential</li>
+                            </ul>
+                            <div class="code-example">
+                                <code>minVolume24h: 500000  // Filter in MemeScout API</code>
+                            </div>
+                        </div>
+
+                        <h3>Volume Growth Rate</h3>
+                        <p>
+                            It's not just about absolute volume—the <em>rate of change</em> matters too. A coin going from $10K to $100K in volume over 24 hours shows exponential growth potential.
+                        </p>
+
+                        <h3>Price Action</h3>
+                        <p>
+                            We track price changes since launch to identify coins with sustained upward momentum vs. pump-and-dump schemes. Healthy meme coins show:
+                        </p>
+                        <ul>
+                            <li>Consistent 2-5% daily gains over several days</li>
+                            <li>Higher lows on pullbacks</li>
+                            <li>Volume spikes on green candles</li>
+                        </ul>
+
+                        <h2>2. Liquidity Indicators 💧</h2>
+                        <p>
+                            Liquidity determines whether you can actually buy or sell without moving the price significantly. Low liquidity = high slippage and risk.
+                        </p>
+
+                        <h3>Total Liquidity Pool</h3>
+                        <div class="metric-card">
+                            <h4>What It Tells Us</h4>
+                            <p>
+                                The total value locked in liquidity pools. Higher liquidity means you can trade larger amounts without massive price impact.
+                            </p>
+                            <h4>Healthy Thresholds</h4>
+                            <ul>
+                                <li><strong>$50K+:</strong> Minimum for small trades</li>
+                                <li><strong>$250K+:</strong> Good for medium positions</li>
+                                <li><strong>$1M+:</strong> Institutional-grade liquidity</li>
+                            </ul>
+                        </div>
+
+                        <h3>Liquidity Locked %</h3>
+                        <p>
+                            What percentage of liquidity is locked vs. can be withdrawn by developers? We look for at least 80% locked liquidity for 6+ months to reduce rug pull risk.
+                        </p>
+
+                        <h3>Market Cap to Liquidity Ratio</h3>
+                        <p>
+                            A healthy ratio is 5:1 to 10:1. If market cap is $5M but liquidity is only $100K (50:1), that's a red flag—the price is artificially inflated.
+                        </p>
+
+                        <h2>3. Stability & Trust Indicators 🛡️</h2>
+                        <p>
+                            These metrics help us avoid scams and identify legitimate projects with staying power.
+                        </p>
+
+                        <h3>Holder Distribution</h3>
+                        <div class="metric-card">
+                            <h4>Red Flags</h4>
+                            <ul>
+                                <li>Top 10 holders own &gt;50% of supply</li>
+                                <li>Developer wallet holds &gt;10% of supply</li>
+                                <li>Fewer than 100 unique holders</li>
+                            </ul>
+                            <h4>Green Flags</h4>
+                            <ul>
+                                <li>Top 10 holders own &lt;30% of supply</li>
+                                <li>1000+ unique holders</li>
+                                <li>Growing holder count daily</li>
+                            </ul>
+                        </div>
+
+                        <h3>Contract Verification</h3>
+                        <p>
+                            We only track coins with verified smart contracts on Etherscan/BSCScan. Unverified contracts can hide malicious code.
+                        </p>
+
+                        <h3>Days Since Launch</h3>
+                        <p>
+                            Our New Launches feature focuses on coins launched in the last 7-30 days. This is the sweet spot where:
+                        </p>
+                        <ul>
+                            <li>Early investors have taken initial profits</li>
+                            <li>Price has stabilized somewhat</li>
+                            <li>There's still massive upside potential</li>
+                            <li>Scams have usually been exposed</li>
+                        </ul>
+
+                        <div class="highlight-box">
+                            <h4>💡 Pro Tip: The 7-Day Window</h4>
+                            <p>
+                                Coins that maintain high volume for 7+ days have proven market interest. This filters out one-day pump-and-dumps while catching genuine trending coins.
+                            </p>
+                            <code>GET /api/v1/tokens/new-launches?maxDays=7&minVolume=500000</code>
+                        </div>
+
+                        <h2>Advanced Indicators We're Building</h2>
+                        <p>
+                            The MemeScout team is actively developing additional signals:
+                        </p>
+
+                        <h3>Social Sentiment Analysis</h3>
+                        <p>
+                            We're integrating Twitter and Reddit APIs to track:
+                        </p>
+                        <ul>
+                            <li>Mention volume and velocity</li>
+                            <li>Sentiment scores (positive/negative)</li>
+                            <li>Influencer engagement</li>
+                            <li>Community growth rates</li>
+                        </ul>
+
+                        <h3>Smart Money Tracking</h3>
+                        <p>
+                            Following wallets that have a history of early entry into successful meme coins. When these wallets buy a new token, it's worth investigating.
+                        </p>
+
+                        <h3>Cross-Chain Analysis</h3>
+                        <p>
+                            Tracking the same coin across multiple chains (Ethereum, BSC, Solana) to identify arbitrage opportunities and overall market sentiment.
+                        </p>
+
+                        <h2>Real-World Example: Spotting a Winner</h2>
+                        <p>
+                            Let's walk through how we'd evaluate a hypothetical new meme coin called "ROCKETMEME":
+                        </p>
+
+                        <div class="example-box">
+                            <h4>ROCKETMEME Analysis</h4>
+                            <table class="table">
+                                <tr>
+                                    <td><strong>Launch Date:</strong></td>
+                                    <td>5 days ago ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>24h Volume:</strong></td>
+                                    <td>$1.5M ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Liquidity Pool:</strong></td>
+                                    <td>$800K (80% locked) ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Market Cap:</strong></td>
+                                    <td>$2.5M ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Holders:</strong></td>
+                                    <td>2,500 (growing 20%/day) ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Top 10 Holdings:</strong></td>
+                                    <td>28% ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Price Change:</strong></td>
+                                    <td>+150% since launch ✅</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Contract:</strong></td>
+                                    <td>Verified ✅</td>
+                                </tr>
+                            </table>
+                            <p><strong>MemeScore: 87.5/100</strong></p>
+                            <p class="text-success"><strong>Verdict:</strong> Strong buy signal. All key metrics are green.</p>
+                        </div>
+
+                        <h2>Red Flags to Avoid</h2>
+                        <p>
+                            Not every coin that pumps is worth your investment. Watch out for:
+                        </p>
+
+                        <div class="warning-box">
+                            <h4>🚨 Major Red Flags</h4>
+                            <ul>
+                                <li><strong>Honeypot contracts:</strong> You can buy but can't sell</li>
+                                <li><strong>Unverified contracts:</strong> Could contain malicious code</li>
+                                <li><strong>Sudden volume spikes:</strong> Often coordinated pumps</li>
+                                <li><strong>Anonymous teams:</strong> Easy to rug pull</li>
+                                <li><strong>Unrealistic promises:</strong> "10000x guaranteed!"</li>
+                                <li><strong>Low liquidity:</strong> Hard to sell when you need to</li>
+                                <li><strong>Single LP provider:</strong> Can be withdrawn anytime</li>
+                            </ul>
+                        </div>
+
+                        <h2>Building Your Strategy</h2>
+                        <p>
+                            Here's a simple framework to get started:
+                        </p>
+
+                        <ol>
+                            <li>
+                                <strong>Use MemeScout's New Launches API</strong> to filter coins by volume and recency:
+                                <pre><code>GET /api/v1/tokens/new-launches?maxDays=7&minVolume=500000</code></pre>
+                            </li>
+                            <li>
+                                <strong>Check the price history</strong> for each promising coin:
+                                <pre><code>GET /api/v1/tokens/{id}/price-history?days=7</code></pre>
+                            </li>
+                            <li>
+                                <strong>Verify the contract</strong> on Etherscan/BSCScan
+                            </li>
+                            <li>
+                                <strong>Check holder distribution</strong> on DEX screeners
+                            </li>
+                            <li>
+                                <strong>Review social sentiment</strong> on Twitter/Reddit
+                            </li>
+                            <li>
+                                <strong>Start small</strong> with 1-2% of your portfolio
+                            </li>
+                            <li>
+                                <strong>Set stop losses</strong> at -20% to protect capital
+                            </li>
+                        </ol>
+
+                        <h2>Key Takeaways</h2>
+                        <div class="takeaway-box">
+                            <ul>
+                                <li>📊 <strong>Volume is king:</strong> Focus on coins with $500K+ daily volume</li>
+                                <li>🕐 <strong>Timing matters:</strong> 7-30 days post-launch is the sweet spot</li>
+                                <li>💧 <strong>Liquidity is safety:</strong> Only trade coins with deep liquidity</li>
+                                <li>👥 <strong>Distribution matters:</strong> Avoid heavily concentrated holdings</li>
+                                <li>🔍 <strong>Verify everything:</strong> Contract, team, claims, liquidity locks</li>
+                                <li>🎯 <strong>Use data, not hype:</strong> MemeScout provides objective metrics</li>
+                                <li>💰 <strong>Risk management:</strong> Never invest more than you can lose</li>
+                            </ul>
+                        </div>
+
+                        <h2>Try It Yourself with MemeScout</h2>
+                        <p>
+                            Ready to start finding the next big meme coin? MemeScout's API makes it easy to filter, analyze, and track coins using the metrics we discussed:
+                        </p>
+
+                        <pre><code class="language-bash"># Get newly launched coins with high volume
+curl "http://localhost:3000/api/v1/tokens/new-launches?maxDays=7&minVolume=500000"
+
+# Get price history for analysis
+curl "http://localhost:3000/api/v1/tokens/{token-id}/price-history?days=30"
+
+# Get top coins by MemeScore
+curl "http://localhost:3000/api/v1/tokens/top?limit=20"</code></pre>
+
+                        <div class="cta-box">
+                            <h3>Start Using MemeScout Today</h3>
+                            <p>Track meme coins with real-time data, intelligent scoring, and direct Coinbase integration.</p>
+                            <a href="https://github.com/prateeekphukar/meme-coin-backend" class="btn btn-primary" target="_blank">
+                                <i class="bi bi-github"></i> Get Started on GitHub
+                            </a>
+                            <a href="../index.html#demo" class="btn btn-outline-primary ms-2">
+                                Try Live Demo <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <hr>
+
+                        <div class="author-bio">
+                            <h4>About the Author</h4>
+                            <p>
+                                <strong>Pratik Fulkar</strong> is a full-stack developer and crypto enthusiast. He built MemeScout to bring data-driven analysis to the chaotic world of meme coin trading.
+                            </p>
+                            <p>
+                                <a href="https://github.com/prateeekphukar" target="_blank"><i class="bi bi-github"></i> GitHub</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Share Section -->
+                    <div class="article-share">
+                        <h5>Share this article</h5>
+                        <div class="share-buttons">
+                            <a href="#" class="btn btn-outline-secondary"><i class="bi bi-twitter"></i> Twitter</a>
+                            <a href="#" class="btn btn-outline-secondary"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                            <a href="#" class="btn btn-outline-secondary"><i class="bi bi-facebook"></i> Facebook</a>
+                        </div>
+                    </div>
+
+                    <!-- Related Posts -->
+                    <div class="related-posts">
+                        <h3>Related Posts</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="related-post-card">
+                                    <h5><a href="building-memescout.html">Building a Production-Ready Meme Coin Tracker with NestJS</a></h5>
+                                    <p>Learn how we built MemeScout from scratch using modern technologies...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><span class="brand-icon">🚀</span> MemeScout</h5>
+                    <p class="text-muted">Production-ready backend API for discovering and tracking meme coins</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html#features">Features</a></li>
+                        <li><a href="../index.html#api">API Documentation</a></li>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Resources</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend#-quick-start" target="_blank">Getting Started</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/NEW_LAUNCHES_FEATURE.md" target="_blank">New Launches Guide</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/COINBASE_URLS.md" target="_blank">Coinbase Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2026 MemeScout. MIT License.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Made with ❤️ by <a href="https://github.com/prateeekphukar" target="_blank">Pratik Fulkar</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

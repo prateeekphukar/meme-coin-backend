@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn how we built MemeScout, a production-ready meme coin tracker using NestJS, PostgreSQL, and Prisma ORM">
+    <title>Building a Production-Ready Meme Coin Tracker with NestJS - MemeScout Blog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <span class="brand-icon">🚀</span> MemeScout
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html#features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html#api">API</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../index.html#demo">Live Demo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../blog.html">Blog</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank"><i class="bi bi-github"></i> GitHub</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Article Header -->
+    <article class="blog-article">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="article-header">
+                        <a href="../blog.html" class="back-link"><i class="bi bi-arrow-left"></i> Back to Blog</a>
+                        <span class="article-category">Development</span>
+                        <h1 class="article-title">Building a Production-Ready Meme Coin Tracker with NestJS</h1>
+                        <div class="article-meta">
+                            <span class="author"><i class="bi bi-person"></i> Pratik Fulkar</span>
+                            <span class="date"><i class="bi bi-calendar3"></i> February 15, 2026</span>
+                            <span class="read-time"><i class="bi bi-clock"></i> 8 min read</span>
+                        </div>
+                        <div class="article-tags mt-3">
+                            <span class="badge bg-secondary">NestJS</span>
+                            <span class="badge bg-secondary">TypeScript</span>
+                            <span class="badge bg-secondary">PostgreSQL</span>
+                            <span class="badge bg-secondary">Prisma</span>
+                            <span class="badge bg-secondary">Docker</span>
+                        </div>
+                    </div>
+
+                    <!-- Article Content -->
+                    <div class="article-content">
+                        <p class="lead">
+                            The meme coin market is explosive, unpredictable, and full of opportunity. Building a robust platform to track and analyze these volatile assets requires careful architectural decisions, scalable infrastructure, and production-grade code. In this post, I'll walk you through how we built MemeScout—a comprehensive backend API for discovering and tracking meme coins.
+                        </p>
+
+                        <h2>Why We Built MemeScout</h2>
+                        <p>
+                            The crypto space moves fast, and meme coins move even faster. Investors and traders need real-time data, historical insights, and intelligent scoring to make informed decisions. We identified several key requirements:
+                        </p>
+                        <ul>
+                            <li><strong>Real-time discovery</strong> of new meme coins from DEX platforms</li>
+                            <li><strong>Historical price tracking</strong> with snapshots</li>
+                            <li><strong>Intelligent scoring algorithms</strong> based on multiple factors</li>
+                            <li><strong>High availability and performance</strong> for production workloads</li>
+                            <li><strong>Direct integration with Coinbase</strong> for seamless trading</li>
+                        </ul>
+
+                        <h2>Architecture Overview</h2>
+                        <p>
+                            We chose a modern, production-ready tech stack that prioritizes type safety, developer experience, and scalability:
+                        </p>
+                        
+                        <div class="tech-stack-list">
+                            <div class="tech-item-detail">
+                                <h4><i class="bi bi-server"></i> NestJS 10</h4>
+                                <p>A progressive Node.js framework that brings structure and best practices to our API. NestJS provides excellent TypeScript support, dependency injection, and a modular architecture that scales beautifully.</p>
+                            </div>
+                            
+                            <div class="tech-item-detail">
+                                <h4><i class="bi bi-database"></i> PostgreSQL 15</h4>
+                                <p>Our primary database for storing tokens, price snapshots, user watchlists, and alerts. PostgreSQL offers ACID compliance, advanced indexing, and excellent performance for complex queries.</p>
+                            </div>
+                            
+                            <div class="tech-item-detail">
+                                <h4><i class="bi bi-lightning-charge"></i> Prisma ORM</h4>
+                                <p>Type-safe database access with auto-generated TypeScript types. Prisma's migration system and query builder make database operations a breeze while maintaining full type safety.</p>
+                            </div>
+                            
+                            <div class="tech-item-detail">
+                                <h4><i class="bi bi-hdd-stack"></i> Redis</h4>
+                                <p>High-performance caching layer to reduce database load and improve API response times. Essential for frequently accessed data like token lists and price snapshots.</p>
+                            </div>
+                        </div>
+
+                        <h2>Key Features Implementation</h2>
+
+                        <h3>1. New Launches Tracker</h3>
+                        <p>
+                            One of our most powerful features is the new launches tracker. It identifies newly launched meme coins with high trading volume, providing investors with early opportunities. Here's how we implemented it:
+                        </p>
+
+                        <pre><code class="language-typescript">async getNewlyLaunchedCoins(
+  maxDaysSinceLaunch: number = 30,
+  minVolume24h: number = 100000,
+  limit: number = 50,
+): Promise&lt;NewLaunchesResponseDto&gt; {
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - maxDaysSinceLaunch);
+
+  const tokens = await this.prisma.token.findMany({
+    where: {
+      launchDate: { gte: cutoffDate },
+      volume24h: { gte: minVolume24h },
+    },
+    orderBy: [
+      { volume24h: 'desc' },
+      { launchDate: 'desc' },
+    ],
+    take: limit,
+    include: {
+      chain: true,
+      snapshots: {
+        orderBy: { timestamp: 'asc' },
+        take: 100,
+      },
+    },
+  });
+
+  // Calculate price changes and format response...
+}</code></pre>
+
+                        <p>
+                            This query efficiently filters tokens by launch date and volume, orders them by relevance, and includes historical snapshots for price analysis. Database indexes on <code>launchDate</code> and <code>volume24h</code> ensure fast query performance.
+                        </p>
+
+                        <h3>2. Coinbase Integration</h3>
+                        <p>
+                            Every token in our system includes a clickable Coinbase URL, making it seamless for users to trade directly from our platform. The implementation is straightforward but powerful:
+                        </p>
+
+                        <pre><code class="language-typescript">generateCoinbaseUrl(symbol: string): string {
+  const normalizedSymbol = symbol.toUpperCase();
+  return `https://www.coinbase.com/price/${normalizedSymbol}`;
+}</code></pre>
+
+                        <p>
+                            This simple function generates consistent URLs that our frontend can use to create clickable links. All endpoints automatically include this URL in their responses.
+                        </p>
+
+                        <h3>3. Price History & Snapshots</h3>
+                        <p>
+                            Historical price data is crucial for trend analysis. We use a snapshot system that records price, volume, and meme score at regular intervals:
+                        </p>
+
+                        <pre><code class="language-typescript">async getTokenPriceHistory(tokenId: string, days: number = 30) {
+  const cutoffDate = new Date();
+  cutoffDate.setDate(cutoffDate.getDate() - days);
+
+  const snapshots = await this.prisma.tokenSnapshot.findMany({
+    where: {
+      tokenId,
+      timestamp: { gte: cutoffDate },
+    },
+    orderBy: { timestamp: 'asc' },
+  });
+
+  return snapshots.map((snapshot) => ({
+    priceUsd: snapshot.priceUsd,
+    volume24h: snapshot.volume24h,
+    memeScore: snapshot.memeScore,
+    timestamp: snapshot.timestamp,
+  }));
+}</code></pre>
+
+                        <h2>Database Schema Design</h2>
+                        <p>
+                            Our Prisma schema is designed for performance and scalability. Key design decisions include:
+                        </p>
+
+                        <ul>
+                            <li><strong>Strategic indexes</strong> on frequently queried fields (memeScore, launchDate, volume24h)</li>
+                            <li><strong>Timestamp-based partitioning</strong> for price snapshots</li>
+                            <li><strong>Normalized relationships</strong> between tokens, chains, watchlists, and users</li>
+                            <li><strong>Optional fields</strong> for backward compatibility during migrations</li>
+                        </ul>
+
+                        <h2>API Design & Documentation</h2>
+                        <p>
+                            We use Swagger/OpenAPI for comprehensive API documentation. Every endpoint is documented with:
+                        </p>
+                        <ul>
+                            <li>Request/response schemas with TypeScript types</li>
+                            <li>Query parameter descriptions and defaults</li>
+                            <li>Example requests and responses</li>
+                            <li>Error codes and handling</li>
+                        </ul>
+
+                        <p>
+                            This makes it easy for frontend developers and API consumers to integrate with MemeScout.
+                        </p>
+
+                        <h2>Performance Optimization</h2>
+                        <p>
+                            To handle high traffic and provide fast responses, we implemented several optimizations:
+                        </p>
+
+                        <div class="highlight-box">
+                            <h4>🚀 Key Optimizations</h4>
+                            <ul class="mb-0">
+                                <li><strong>Redis caching</strong> for frequently accessed token lists</li>
+                                <li><strong>Database connection pooling</strong> with Prisma</li>
+                                <li><strong>Strategic indexes</strong> on all query-heavy fields</li>
+                                <li><strong>Pagination</strong> for large result sets</li>
+                                <li><strong>Query optimization</strong> to minimize N+1 problems</li>
+                            </ul>
+                        </div>
+
+                        <h2>Deployment & DevOps</h2>
+                        <p>
+                            MemeScout is containerized with Docker and can be deployed anywhere that supports Docker containers. Our <code>docker-compose.yml</code> includes:
+                        </p>
+                        <ul>
+                            <li>PostgreSQL database with persistent volume</li>
+                            <li>Redis cache</li>
+                            <li>The NestJS application</li>
+                            <li>Network configuration for service communication</li>
+                        </ul>
+
+                        <pre><code class="language-bash"># Deploy with a single command
+docker-compose up -d
+
+# Run database migrations
+npm run prisma:migrate
+
+# Access API at http://localhost:3000
+# Swagger docs at http://localhost:3000/docs</code></pre>
+
+                        <h2>Lessons Learned</h2>
+                        <p>
+                            Building MemeScout taught us valuable lessons about production-grade API development:
+                        </p>
+
+                        <ol>
+                            <li><strong>Type safety is invaluable</strong> - TypeScript + Prisma caught countless bugs before they reached production</li>
+                            <li><strong>Start with good architecture</strong> - NestJS's modular structure made it easy to add new features</li>
+                            <li><strong>Performance matters from day one</strong> - Indexes and caching are easier to add early than later</li>
+                            <li><strong>Documentation drives adoption</strong> - Swagger made it easy for others to use our API</li>
+                            <li><strong>Real-world data is messy</strong> - Robust error handling and data validation are essential</li>
+                        </ol>
+
+                        <h2>What's Next</h2>
+                        <p>
+                            We're continuously improving MemeScout with new features:
+                        </p>
+                        <ul>
+                            <li>Machine learning-based price prediction</li>
+                            <li>Social sentiment analysis from Twitter/Reddit</li>
+                            <li>Advanced portfolio tracking and analytics</li>
+                            <li>Real-time WebSocket connections for live updates</li>
+                            <li>Mobile app with push notifications</li>
+                        </ul>
+
+                        <h2>Try It Yourself</h2>
+                        <p>
+                            MemeScout is open source and available on GitHub. You can:
+                        </p>
+                        <ul>
+                            <li>Clone the repository and run it locally</li>
+                            <li>Explore the <a href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank">source code</a></li>
+                            <li>Contribute features or bug fixes</li>
+                            <li>Use it as a foundation for your own projects</li>
+                        </ul>
+
+                        <div class="cta-box">
+                            <h3>Get Started with MemeScout</h3>
+                            <p>Ready to build your own meme coin tracker or integrate MemeScout into your project?</p>
+                            <a href="https://github.com/prateeekphukar/meme-coin-backend" class="btn btn-primary" target="_blank">
+                                <i class="bi bi-github"></i> View on GitHub
+                            </a>
+                            <a href="https://github.com/prateeekphukar/meme-coin-backend#-quick-start" class="btn btn-outline-primary ms-2" target="_blank">
+                                Read the Docs <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+
+                        <hr>
+
+                        <div class="author-bio">
+                            <h4>About the Author</h4>
+                            <p>
+                                <strong>Pratik Fulkar</strong> is a full-stack developer passionate about blockchain technology, TypeScript, and building production-grade applications. He specializes in backend architecture, API design, and DevOps practices.
+                            </p>
+                            <p>
+                                <a href="https://github.com/prateeekphukar" target="_blank"><i class="bi bi-github"></i> GitHub</a>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Share Section -->
+                    <div class="article-share">
+                        <h5>Share this article</h5>
+                        <div class="share-buttons">
+                            <a href="#" class="btn btn-outline-secondary"><i class="bi bi-twitter"></i> Twitter</a>
+                            <a href="#" class="btn btn-outline-secondary"><i class="bi bi-linkedin"></i> LinkedIn</a>
+                            <a href="#" class="btn btn-outline-secondary"><i class="bi bi-facebook"></i> Facebook</a>
+                        </div>
+                    </div>
+
+                    <!-- Related Posts -->
+                    <div class="related-posts">
+                        <h3>Related Posts</h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="related-post-card">
+                                    <h5><a href="spotting-meme-coins.html">How to Spot the Next Big Meme Coin: Key Metrics and Indicators</a></h5>
+                                    <p>Discover the key metrics and indicators we use to identify high-potential meme coins...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5><span class="brand-icon">🚀</span> MemeScout</h5>
+                    <p class="text-muted">Production-ready backend API for discovering and tracking meme coins</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="../index.html#features">Features</a></li>
+                        <li><a href="../index.html#api">API Documentation</a></li>
+                        <li><a href="../blog.html">Blog</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6>Resources</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend#-quick-start" target="_blank">Getting Started</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/NEW_LAUNCHES_FEATURE.md" target="_blank">New Launches Guide</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/COINBASE_URLS.md" target="_blank">Coinbase Integration</a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2026 MemeScout. MIT License.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Made with ❤️ by <a href="https://github.com/prateeekphukar" target="_blank">Pratik Fulkar</a></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>
