@@ -20,7 +20,7 @@ const sampleTokens = [
         id: '1',
         symbol: 'MOONROCK',
         name: 'Moon Rock Token',
-        coinbaseUrl: 'https://www.coinbase.com/price/MOONROCK',
+        coinbaseUrl: 'https://coinlaunch.space/coins/moonrock',
         currentPrice: 0.0025,
         initialPrice: 0.001,
         priceChangePercent: 150,
@@ -34,7 +34,7 @@ const sampleTokens = [
         id: '2',
         symbol: 'ROCKETMEME',
         name: 'Rocket Meme Coin',
-        coinbaseUrl: 'https://www.coinbase.com/price/ROCKETMEME',
+        coinbaseUrl: 'https://coinlaunch.space/coins/rocketmeme',
         currentPrice: 0.015,
         initialPrice: 0.005,
         priceChangePercent: 200,
@@ -48,7 +48,7 @@ const sampleTokens = [
         id: '3',
         symbol: 'DOGEX',
         name: 'Doge X Token',
-        coinbaseUrl: 'https://www.coinbase.com/price/DOGEX',
+        coinbaseUrl: 'https://coinlaunch.space/coins/dogex',
         currentPrice: 0.0085,
         initialPrice: 0.003,
         priceChangePercent: 183,
@@ -62,7 +62,7 @@ const sampleTokens = [
         id: '4',
         symbol: 'PEPEMAX',
         name: 'Pepe Maximalist',
-        coinbaseUrl: 'https://www.coinbase.com/price/PEPEMAX',
+        coinbaseUrl: 'https://coinlaunch.space/coins/pepemax',
         currentPrice: 0.0012,
         initialPrice: 0.0008,
         priceChangePercent: 50,
@@ -76,7 +76,7 @@ const sampleTokens = [
         id: '5',
         symbol: 'SHIB2',
         name: 'Shiba Inu 2.0',
-        coinbaseUrl: 'https://www.coinbase.com/price/SHIB2',
+        coinbaseUrl: 'https://coinlaunch.space/coins/shib2',
         currentPrice: 0.0035,
         initialPrice: 0.002,
         priceChangePercent: 75,
@@ -90,7 +90,7 @@ const sampleTokens = [
         id: '6',
         symbol: 'FLOKI3',
         name: 'Floki Evolution',
-        coinbaseUrl: 'https://www.coinbase.com/price/FLOKI3',
+        coinbaseUrl: 'https://coinlaunch.space/coins/floki3',
         currentPrice: 0.0068,
         initialPrice: 0.0025,
         priceChangePercent: 172,
@@ -226,7 +226,7 @@ function displayDemoResults(tokens) {
                                rel="noopener noreferrer"
                                class="btn btn-primary btn-sm w-100">
                                 <i class="bi bi-graph-up me-2"></i>
-                                View on Coinbase
+                                View on CoinLaunch
                             </a>
                         </div>
                     </div>

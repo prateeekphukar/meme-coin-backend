@@ -70,7 +70,7 @@
                             <li><strong>Historical price tracking</strong> with snapshots</li>
                             <li><strong>Intelligent scoring algorithms</strong> based on multiple factors</li>
                             <li><strong>High availability and performance</strong> for production workloads</li>
-                            <li><strong>Direct integration with Coinbase</strong> for seamless trading</li>
+                            <li><strong>Direct integration with CoinLaunch</strong> for seamless access</li>
                         </ul>
 
                         <h2>Architecture Overview</h2>
@@ -141,14 +141,14 @@
                             This query efficiently filters tokens by launch date and volume, orders them by relevance, and includes historical snapshots for price analysis. Database indexes on <code>launchDate</code> and <code>volume24h</code> ensure fast query performance.
                         </p>
 
-                        <h3>2. Coinbase Integration</h3>
+                        <h3>2. CoinLaunch Integration</h3>
                         <p>
-                            Every token in our system includes a clickable Coinbase URL, making it seamless for users to trade directly from our platform. The implementation is straightforward but powerful:
+                            Every token in our system includes a clickable CoinLaunch URL, making it seamless for users to access coin information directly from our platform. The implementation is straightforward but powerful:
                         </p>
 
-                        <pre><code class="language-typescript">generateCoinbaseUrl(symbol: string): string {
-  const normalizedSymbol = symbol.toUpperCase();
-  return `https://www.coinbase.com/price/${normalizedSymbol}`;
+                        <pre><code class="language-typescript">generateCoinLaunchUrl(symbol: string): string {
+  const normalizedSymbol = symbol.toLowerCase();
+  return `https://coinlaunch.space/coins/${normalizedSymbol}`;
 }</code></pre>
 
                         <p>
@@ -352,7 +352,7 @@ npm run prisma:migrate
                     <ul class="list-unstyled">
                         <li><a href="https://github.com/prateeekphukar/meme-coin-backend#-quick-start" target="_blank">Getting Started</a></li>
                         <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/NEW_LAUNCHES_FEATURE.md" target="_blank">New Launches Guide</a></li>
-                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/COINBASE_URLS.md" target="_blank">Coinbase Integration</a></li>
+                        <li><a href="https://github.com/prateeekphukar/meme-coin-backend/blob/main/COINBASE_URLS.md" target="_blank">CoinLaunch Integration</a></li>
                     </ul>
                 </div>
             </div>

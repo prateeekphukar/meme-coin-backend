@@ -31,7 +31,7 @@ showcase/
   - Real-time discovery
   - Intelligent scoring
   - **NEW** New launches tracker
-  - **NEW** Coinbase integration
+  - **NEW** CoinLaunch integration
   - **NEW** Price history
   - User watchlists
   - Smart alerts
@@ -136,9 +136,9 @@ The showcase comprehensively covers all new features added to MemeScout:
 - View price history and % change since launch
 - Interactive demo with adjustable parameters
 
-### ✅ Coinbase Integration
-- Every token includes clickable Coinbase URL
-- Direct links to trade on Coinbase
+### ✅ CoinLaunch Integration
+- Every token includes clickable CoinLaunch URL
+- Direct links to view on CoinLaunch
 - Seamless user experience
 
 ### ✅ Price History
