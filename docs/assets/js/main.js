@@ -321,9 +321,10 @@ function displayDemoResults(tokens) {
                             <a href="${coin.coinbaseUrl}" 
                                target="_blank" 
                                rel="noopener noreferrer"
-                               class="btn btn-primary btn-sm w-100">
-                                <i class="bi bi-graph-up me-2"></i>
-                                View on CoinMarketCap
+                               class="btn btn-primary btn-sm w-100 fw-bold"
+                               style="padding: 10px 15px; font-size: 14px; text-decoration: none;">
+                                <i class="bi bi-box-arrow-up-right me-2"></i>
+                                View on CoinMarketCap →
                             </a>
                         </div>
                     </div>

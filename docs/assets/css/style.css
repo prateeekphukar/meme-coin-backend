@@ -295,6 +295,32 @@ body {
     margin-bottom: 30px;
 }
 
+/* Card styling for demo results */
+#demo-results .card {
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+#demo-results .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+#demo-results .card-link-header:hover h4 {
+    color: #667eea !important;
+}
+
+#demo-results .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    font-weight: 600;
+}
+
+#demo-results .btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    transform: scale(1.02);
+}
+
 /* =================================================================
    Tech Stack Section
    ================================================================= */
