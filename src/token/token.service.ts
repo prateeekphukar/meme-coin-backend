@@ -14,7 +14,7 @@ export class TokenService {
   generateCoinbaseUrl(symbol: string): string {
     // CoinMarketCap search URL - works for any symbol
     const normalizedSymbol = symbol.toUpperCase();
-    return `https://coinmarketcap.com/currencies/${normalizedSymbol.toLowerCase()}/`;
+    return `https://coinmarketcap.com/search?q=${normalizedSymbol}`;
   }
 
   /**
