@@ -33,3 +33,53 @@ The backend is specifically optimized for high-performance mobile clients:
 - **Smart Alerts**: Price, score, and percentage change alerts with background processing
 - **RESTful API**: Clean, well-documented endpoints for mobile/web clients
 - **Caching Layer**: Redis-powered caching for high-performance reads
+
+### 🆕 New Features
+- **Clickable Coinbase URLs**: All coin tabs include direct links to Coinbase coin pages
+- **Newly Launched Coins Tracker**: Dedicated endpoint for coins launched within last N days with high transaction volume
+- **Price History Tracking**: Historical price data with snapshots for trend analysis
+- **Price Change Calculations**: Automatic calculation of price changes since launch
+- **Volume Filtering**: Filter coins by 24h trading volume to find high-activity tokens
+- **Launch Date Filtering**: Find the newest coins based on launch date
+
+## 🔌 API Endpoints
+
+### Token Endpoints
+```bash
+# Get all tokens with Coinbase links
+GET /api/v1/tokens?limit=100&offset=0
+
+# Get newly launched coins with high volume
+GET /api/v1/tokens/new-launches?maxDays=30&minVolume=100000&limit=50
+
+# Get top tokens by meme score
+GET /api/v1/tokens/top?limit=20
+
+# Get single token details
+GET /api/v1/tokens/:id
+
+# Get token price history
+GET /api/v1/tokens/:id/price-history?days=30
+
+# Sync Coinbase URLs for all tokens
+POST /api/v1/tokens/sync-coinbase-urls
+```
+
+### Watchlist Endpoints
+```bash
+# Get user watchlists with coin Coinbase links
+GET /api/v1/watchlists/user/:userId
+```
+
+### Additional Endpoints
+- `GET /api/v1/users` - List all users
+- `GET /api/v1/alerts` - Get alerts
+- `GET /api/v1/discovery` - Discover new tokens
+- `GET /api/v1/scoring` - Calculate token scores
+
+📚 **Full API Documentation**: Access interactive Swagger docs at `http://localhost:3000/docs`
+
+## 📖 Feature Documentation
+
+- [Coinbase URLs Integration](COINBASE_URLS.md) - Learn how to use clickable Coinbase links
+- [New Launches Feature](NEW_LAUNCHES_FEATURE.md) - Complete guide to newly launched coins endpoint
